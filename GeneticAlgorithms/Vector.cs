@@ -1,13 +1,48 @@
 ﻿using System;
 using myMatrix;
+using System.Windows;
+using System.Collections;
+
 namespace myVector
 {
-    public class Vector
+    public class Vector : IComparable<Vector>
     {
+        /// <summary>
+        /// Реализация интерфейса IComparable, для сортировки векторов.
+        /// </summary>
+        public int CompareTo(Vector other)
+        {
+            if (Function == null) throw new ArgumentException("Не зада исследуемая функция.");
+            return FitnessFunction.CompareTo(other.FitnessFunction);
+        }
+
+        /// <summary>
+        /// Итератор, выполняющий перебор элементов популяции.
+        /// </summary>
+        public IEnumerator GetEnumerator()
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                yield return (this[i]);
+            }
+        }
+
+        /// <summary>
+        /// Исследуемая функция в виде лямбда выражения.
+        /// </summary>
+        public static Delegate Function { get; set; }
+
+
+        /// <summary>
+        /// Приспособленность особи / Значение функции в точке.
+        /// </summary>
+        public double FitnessFunction { get { return (double)Function.DynamicInvoke(vector); } }
+
+
         /// <summary>
         /// Вектор.
         /// </summary>
-        public double[] vector;
+        public double[] vector { get; }
 
 
         /// <summary>
@@ -124,6 +159,7 @@ namespace myVector
             return vector;
         }
 
+
         /// <summary>
         ///Норма вектора.
         /// </summary>
@@ -141,8 +177,8 @@ namespace myVector
         /// </summary>
         public double this[int index]
         {
-            get { return vector[index]; } // Аксессор для получения данных
-            set { vector[index] = value; } // Аксессор для установки данных
+            get { return vector[index]; } /// Аксессор для получения данных
+            set { vector[index] = value; } /// Аксессор для установки данных
         }
         /// <summary>
         /// Длина вектора.
