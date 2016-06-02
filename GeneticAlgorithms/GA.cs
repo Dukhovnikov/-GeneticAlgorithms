@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using myMatrix;
 using myVector;
+using System.Windows;
 
 namespace GeneticAlgorithms
 {
@@ -26,7 +27,7 @@ namespace GeneticAlgorithms
         /// <summary>
         /// Максимальное количество итераций.
         /// </summary>
-        public int MaximumIterations { get; set; } = 500;
+        public int MaximumIterations { get; set; } = 100;
 
         /// <summary>
         /// Размер турнира.
@@ -38,14 +39,23 @@ namespace GeneticAlgorithms
         /// </summary>
         static Random RandomNumber = new Random();
 
+        public GA(double CrossingProbability, double MutationProbability, int TournamentSize)
+        {
+            this.CrossingProbability = CrossingProbability;
+            this.MutationProbability = MutationProbability;
+            this.TournamentSize = TournamentSize;
+        }
+
         /// <summary>
         /// Скрещивание выбранных особей.
         /// </summary>
-        private List<Vector> Crossing(Vector Parent1, Vector Parent2)
+        private List<iVector> Crossing(iVector Parent1, iVector Parent2)
         {
-            int BreakPoint = RandomNumber.Next(0, Parent1.Size); /// Точка разрыва.
-            List<Vector> Children = new List<Vector>();
-            if (CrossingProbability > RandomNumber.NextDouble())
+            //int BreakPoint = RandomNumber.Next(Parent1.Size); /// Точка разрыва.
+            int BreakPoint = Population.RandomNumber.Next(Parent1.Size);
+            List<iVector> Children = new List<iVector>();
+            //if (CrossingProbability > RandomNumber.NextDouble())
+            if (CrossingProbability > Population.RandomNumber.NextDouble())
             {
                 double temp = Parent1[BreakPoint];
                 Parent1[BreakPoint] = Parent2[BreakPoint];
@@ -61,41 +71,47 @@ namespace GeneticAlgorithms
         /// <summary>
         /// Мутация для вещественной особи.
         /// </summary>
-        private Vector MutationRealValued(Vector child)
+        private iVector MutationRealValued(iVector child)
         {
-            Vector MutantChild = child; /// Ребенок мутант.
+            iVector MutantChild = child; /// Ребенок мутант.
             for (int i = 0; i < child.Size; i++)
             {
-                if (MutationProbability > RandomNumber.NextDouble())
+                //if (MutationProbability > RandomNumber.NextDouble())
+                if (MutationProbability > Population.RandomNumber.NextDouble())
                 {
-                    MutantChild[i] = MutantChild[i] + RandomNumber.NextDouble() - 0.5;
+                    //MutantChild[i] = MutantChild[i] + RandomNumber.NextDouble() - 0.5;
+                    MutantChild[i] = MutantChild[i] + Population.RandomNumber.NextDouble() - 0.5;
                 }
             }
             return MutantChild;
         }
 
-        public Vector GeneticAlgoritm(Population population)
+        public iVector GeneticAlgoritm(Population population)
         {
             int k = 0;
-            List<Vector> TemporaryPopulation = new List<Vector>(); /// Временная популяция.
-
+            List<iVector> TemporaryPopulation = new List<iVector>(); /// Временная популяция.
+            Population testPopulation = population;
             while (k < MaximumIterations)
             {
-                population = population.GetParentPool(TournamentSize);
-
+                //population = population.GetParentPool(TournamentSize);
+                testPopulation = population.GetParentPool(TournamentSize);
+                if (population.Max.FitnessFunction - population.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 while (TemporaryPopulation.Count != population.Count)
                 {
-                    foreach (Vector item in Crossing(population.RandomSelection, population.RandomSelection))
+                    foreach (iVector item in Crossing(population.RandomSelection, population.RandomSelection))
                     {
                         TemporaryPopulation.Add(item);
                     }
                 }
 
                 population = new Population(TemporaryPopulation);
+                if (k == 99) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 TemporaryPopulation.Clear();
                 k++;
             }
-            return population.Min;
+            iVector min = population.Min;
+            population = null;
+            return min;
         }
     }
 }

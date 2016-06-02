@@ -5,12 +5,12 @@ using System.Collections;
 
 namespace myVector
 {
-    public class Vector : IComparable<Vector>
+    public class iVector : IComparable<iVector>
     {
         /// <summary>
         /// Реализация интерфейса IComparable, для сортировки векторов.
         /// </summary>
-        public int CompareTo(Vector other)
+        public int CompareTo(iVector other)
         {
             if (Function == null) throw new ArgumentException("Не зада исследуемая функция.");
             return FitnessFunction.CompareTo(other.FitnessFunction);
@@ -48,7 +48,7 @@ namespace myVector
         /// <summary>
         /// Пустой вектор, размерностью i.
         /// </summary>
-        public Vector(int i)
+        public iVector(int i)
         {
             vector = new double[i];
             for (int j = 0; j < i; j++) vector[j] = 0;
@@ -58,7 +58,7 @@ namespace myVector
         /// <summary>
         /// Заполнение вектора путем передачи массива.
         /// </summary>
-        public Vector(params double[] vector)
+        public iVector(params double[] vector)
         {
             this.vector = new double[vector.Length];
             this.vector = vector;
@@ -68,9 +68,9 @@ namespace myVector
         /// <summary>
         /// Операция разности векоторв.
         /// </summary>
-        public static Vector operator -(Vector v1, Vector v2) 
+        public static iVector operator -(iVector v1, iVector v2) 
         {
-            Vector v3 = new Vector(v1.Size);
+            iVector v3 = new iVector(v1.Size);
             for (int i = 0; i < v1.Size; i++) v3[i] = v1[i] - v2[i];
             return v3;
         }
@@ -79,7 +79,7 @@ namespace myVector
         /// <summary>
         /// Инвертируем значения полей вектора.
         /// </summary>
-        public static Vector operator -(Vector v1) 
+        public static iVector operator -(iVector v1) 
         {
             for (int i = 0; i < v1.Size; i++) v1[i] *= -1;
             return v1;
@@ -89,9 +89,9 @@ namespace myVector
         /// <summary>
         /// Операция сложения векторов.
         /// </summary>
-        public static Vector operator +(Vector v1, Vector v2) 
+        public static iVector operator +(iVector v1, iVector v2) 
         {
-            Vector v3 = new Vector(v1.Size);
+            iVector v3 = new iVector(v1.Size);
             for (int i = 0; i < v1.Size; i++) v3.vector[i] = v1.vector[i] + v2.vector[i];
             return v3;
         }
@@ -99,9 +99,9 @@ namespace myVector
         /// <summary>
         /// Сложение числа с вектором.
         /// </summary>
-        public static Vector operator +(double C, Vector v1)
+        public static iVector operator +(double C, iVector v1)
         {
-            Vector v3 = new Vector(v1.Size);
+            iVector v3 = new iVector(v1.Size);
             for (int i = 0; i < v1.Size; i++) v3.vector[i] = C + v1.vector[i];
             return v3;
         }
@@ -110,9 +110,9 @@ namespace myVector
         /// <summary>
         /// Операция умножения числа на вектор.
         /// </summary>
-        public static Vector operator *(double C, Vector v1)
+        public static iVector operator *(double C, iVector v1)
         {
-            Vector v3 = new Vector(v1.Size);
+            iVector v3 = new iVector(v1.Size);
             for (int i = 0; i < v1.Size; i++) v3.vector[i] = C * v1.vector[i];
             return v3; 
         }
@@ -121,16 +121,16 @@ namespace myVector
         /// <summary>
         /// Операция умножения вектора на вектор.
         /// </summary>
-        public static double operator *(Vector v1, Vector v2)
+        public static double operator *(iVector v1, iVector v2)
         {
             double v3 = 0;
             for (int i = 0; i < v1.Size; i++) v3 += v1[i] * v2[i];
             return v3;
         }
 
-        public static Vector operator /(Vector v1, double C)
+        public static iVector operator /(iVector v1, double C)
         {
-            Vector v3 = new Vector(v1.Size);
+            iVector v3 = new iVector(v1.Size);
             for (int i = 0; i < v3.Size; i++) v3[i] = v1[i] / C;
             return v3;
         }
@@ -138,7 +138,7 @@ namespace myVector
         /// <summary>
         /// Умножение вектора на транспонированный вектор.
         /// </summary>
-        public static Matrix Multiplication(Vector v1, Vector v2)
+        public static Matrix Multiplication(iVector v1, iVector v2)
         {
             Matrix M = new Matrix(v1.Size);
             if (v1.Size != v2.Size) throw new ArgumentException("Число столбцов матрицы А не равно числу строк матрицы В.");

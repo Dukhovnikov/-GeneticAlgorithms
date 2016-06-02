@@ -7,12 +7,14 @@
         mc:Ignorable="d"
         Title="Генетические Алгоритмы" Height="356.674" Width="647.352">
     <Grid ForceCursor="True" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}">
-        <GroupBox x:Name="groupBox" Header="Поисковой интервал" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="89" Width="262">
+        <GroupBox x:Name="groupBox" Header="Поисковой интервал" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Height="90" Width="156">
             <Grid>
-                <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="120,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-                <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" Margin="120,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" Margin="10,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
             </Grid>
         </GroupBox>
+        <TextBox x:Name="textBox2" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="262"/>
+        <Button x:Name="button" Content="Запустить" HorizontalAlignment="Left" Margin="277,13,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
 
     </Grid>
 </Window>

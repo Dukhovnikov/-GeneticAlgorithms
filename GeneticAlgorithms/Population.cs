@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using myMatrix;
 using myVector;
 using System.Collections;
+using System.Windows;
 
 namespace GeneticAlgorithms
 {
@@ -14,15 +15,11 @@ namespace GeneticAlgorithms
     /// </summary>
     class Population
     {
-        /// <summary>
-        /// Количество особей в популяции.
-        /// </summary>
-        public readonly int AmountIndivid;
-
+        static List<int> test = new List<int>();
         /// <summary>
         /// Класс реализующий популяцию, как набор особей.
         /// </summary>
-        private List<Vector> population { get; set; }
+        private List<iVector> population { get; set; }
 
         /// <summary>
         /// Получает число особей, содержащихся в популяции.
@@ -32,23 +29,39 @@ namespace GeneticAlgorithms
         /// <summary>
         /// Возвращает особь с минимальным значением.
         /// </summary>
-        public Vector Min { get { return population.Min(); } }
+        public iVector Min { get { return population.Min(); } }
+
+        /// <summary>
+        /// Возвращает особь с максимальным значением.
+        /// </summary>
+        public iVector Max { get { return population.Max(); } }
 
         /// <summary>
         /// Возвращает случайную особь из популяции.
         /// </summary>
-        public Vector RandomSelection { get { return this[RandomNumber.Next(0, Count)]; } }
+        public iVector RandomSelection { get { return this[RandomNumber.Next(Count)]; } }
+
+        //public iVector RandomSelection
+        //{
+        //    get
+        //    {
+        //        int i = RandomNumber.Next(Count);
+        //        int j = RandomNumber.Next(Count);
+        //        while (i == j) { i = new Random((int)(DateTime.Now.Ticks)).Next(Count); }
+        //        return this[i];
+        //    }
+        //}
 
         /// <summary>
         /// Переменная для генерации случайного числа из заданного промежутка.
         /// </summary>
-        static Random RandomNumber = new Random();
+        public static Random RandomNumber = new Random();
 
 
         /// <summary>
         /// Возвращает или задает значение отдельной особи.
         /// </summary>
-        public Vector this[int index]
+        public iVector this[int index]
         {
             get { return population[index]; }
             set { population[index] = value; }
@@ -65,24 +78,25 @@ namespace GeneticAlgorithms
         /// <summary>
         /// Конструктор, который инициализирует особи, принимая набор особей.
         /// </summary>
-        public Population(List<Vector> population)
+        public Population(List<iVector> population)
         {
-            this.population = new List<Vector>(population);
+            this.population = new List<iVector>(population);
         }
 
         /// <summary>
         /// Конструктор, генерирующий случайную популяцию заданного размера.
         /// </summary>
-        public Population(Vector StartPoint, Vector EndPoint, int SizePopulation)
+        public Population(iVector StartPoint, iVector EndPoint, int SizePopulation)
         {
-            AmountIndivid = SizePopulation;
+            population = new List<iVector>();
             for (int i = 0; i < SizePopulation; i++)
             {
-                population.Add(new Vector(StartPoint.Size));
+                iVector individ = new iVector(StartPoint.Size);
                 for (int j = 0; j < StartPoint.Size; j++)
                 {
-                    population[i][j] = RandomNumber.NextDouble() * (EndPoint[j] - StartPoint[j]) + StartPoint[j];
+                    individ[j] = RandomNumber.NextDouble() * (EndPoint[j] - StartPoint[j]) + StartPoint[j];
                 }
+                population.Add(individ);
             }
         }
 
@@ -91,12 +105,12 @@ namespace GeneticAlgorithms
         /// </summary>
         /// <param name="TournamentSize">Размер турнира.</param>
         /// <returns></returns>
-        private Vector TournamentSelection(int TournamentSize)
+        private iVector TournamentSelection(int TournamentSize)
         {
-            Vector[] SelectedIndividuals = new Vector[TournamentSize]; /// Массив, который хранит отобранные особи.
+            iVector[] SelectedIndividuals = new iVector[TournamentSize]; /// Массив, который хранит отобранные особи.
             for (int i = 0; i < TournamentSize; i++)
             {
-                SelectedIndividuals[i] = population[RandomNumber.Next(0, AmountIndivid)];
+                SelectedIndividuals[i] = population[RandomNumber.Next(Count)];
             }
             return SelectedIndividuals.Min();
         }
@@ -106,12 +120,16 @@ namespace GeneticAlgorithms
         /// </summary>
         public Population GetParentPool(int TournamentSize)
         {
-            List<Vector> ParentPool = new List<Vector>();
-            for (int i = 0; i < AmountIndivid; i++)
+            List<iVector> ParentPool = new List<iVector>();
+            for (int i = 0; i < Count; i++)
             {
                 ParentPool.Add(TournamentSelection(TournamentSize));
             }
-            return new Population(ParentPool);
+            Population newpop = new Population(ParentPool);
+
+            //if (newpop.Max.FitnessFunction - newpop.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+            //return new Population(ParentPool);
+            return newpop;
         }
 
         /// <summary>
@@ -119,7 +137,7 @@ namespace GeneticAlgorithms
         /// </summary>
         public IEnumerator GetEnumerator()
         {
-            for (int i = 0; i < AmountIndivid; i++)
+            for (int i = 0; i < Count; i++)
             {
                 yield return (this[i]);
             }
