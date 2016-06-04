@@ -41,17 +41,6 @@ namespace GeneticAlgorithms
         /// </summary>
         public iVector RandomSelection { get { return this[RandomNumber.Next(Count)]; } }
 
-        //public iVector RandomSelection
-        //{
-        //    get
-        //    {
-        //        int i = RandomNumber.Next(Count);
-        //        int j = RandomNumber.Next(Count);
-        //        while (i == j) { i = new Random((int)(DateTime.Now.Ticks)).Next(Count); }
-        //        return this[i];
-        //    }
-        //}
-
         /// <summary>
         /// Переменная для генерации случайного числа из заданного промежутка.
         /// </summary>
@@ -123,13 +112,10 @@ namespace GeneticAlgorithms
             List<iVector> ParentPool = new List<iVector>();
             for (int i = 0; i < Count; i++)
             {
-                ParentPool.Add(TournamentSelection(TournamentSize));
+                //ParentPool.Add(TournamentSelection(TournamentSize));
+                ParentPool.Add(new iVector((TournamentSelection(TournamentSize)));
             }
-            Population newpop = new Population(ParentPool);
-
-            //if (newpop.Max.FitnessFunction - newpop.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //return new Population(ParentPool);
-            return newpop;
+            return new Population(ParentPool);
         }
 
         /// <summary>

@@ -64,6 +64,17 @@ namespace myVector
             this.vector = vector;
         }
 
+        /// <summary>
+        /// Коснтруктор, инициализирущий вектор посредством другого вектора.
+        /// </summary>
+        public iVector(iVector vector)
+        {
+            for (int i = 0; i < vector.Size; i++)
+            {
+                this.vector[i] = vector[i];
+            }
+        }
+
 
         /// <summary>
         /// Операция разности векоторв.
