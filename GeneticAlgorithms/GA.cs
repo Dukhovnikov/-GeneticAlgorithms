@@ -99,6 +99,44 @@ namespace GeneticAlgorithms
         }
 
         /// <summary>
+        /// Двухточечное скрещиание для целочисленного кодирования.
+        /// </summary>
+        private List<Vectors> CrossingIntegerTwoPoint(Vectors Parent1, Vectors Parent2)
+        {
+            bool check = false;
+            List<Vectors> Children = new List<Vectors>();
+            for (int i = 0; i < Parent1.Size; i++)
+            {
+                /// Этап скрещивания
+                if (CrossingProbability > RandomNumber.NextDouble())
+                {
+                    check = true;
+                    int mask1 = (1 << RandomNumber.Next(Vectors.BitsCount)) - 1;
+                    int mask2 = (1 << RandomNumber.Next(Vectors.BitsCount)) - 1;
+                    int mask = Math.Abs(mask1 - mask2);
+                    int swapMask = (Convert.ToInt32(Parent1[i]) ^ Convert.ToInt32(Parent2[i])) & mask;
+                    Parent1[i] = Convert.ToInt32(Parent1[i]) ^ swapMask;
+                    Parent2[i] = Convert.ToInt32(Parent2[i]) ^ swapMask;
+                }
+            }
+                /// Этап мутации
+                if (check)
+                {
+                    Parent1 = MutationBit(Parent1);
+                    Parent2 = MutationBit(Parent2);
+                }
+                Children.Add(Parent1);
+                Children.Add(Parent2);
+                return Children;
+            
+        }
+
+        private List<Vectors> CrossingIntegerUniform(Vectors Parent1, Vectors Parent2)
+        {
+
+        }
+
+        /// <summary>
         /// Битовая мутация.
         /// </summary>
         private Vectors MutationBit(Vectors Child)
@@ -136,6 +174,9 @@ namespace GeneticAlgorithms
             return MutantChild;
         }
 
+        /// <summary>
+        /// Генетический алгоритм для вещественного кодирования.
+        /// </summary>
         public Vectors GeneticAlgoritm(Population population)
         {
             int k = 0;
@@ -164,6 +205,9 @@ namespace GeneticAlgorithms
             return min;
         }
 
+        /// <summary>
+        /// Генетический алгоритм, для целочисленного кодирования.
+        /// </summary>
         public Vectors GeneticAlgoritmInteger(Population population)
         {
             int k = 0;
