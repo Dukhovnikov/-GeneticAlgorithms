@@ -80,10 +80,10 @@ namespace myMatrix
         /// <summary>
         /// Умножение матрицы на вектор.
         /// </summary>
-        public static iVector operator *(Matrix M, iVector V)
+        public static Vectors operator *(Matrix M, Vectors V)
         {
             if (M.Size != V.Size) throw new ArgumentException("Число столбцов матрицы А не равно числу элементов вектора В.");
-            iVector vector = new iVector(V.Size);
+            Vectors vector = new Vectors(V.Size);
             for (int i = 0; i < vector.Size; i++)
                 for (int j = 0; j < vector.Size; j++)
                     vector[i] += M[i, j] * V[j];

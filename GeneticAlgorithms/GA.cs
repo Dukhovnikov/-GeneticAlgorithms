@@ -49,11 +49,11 @@ namespace GeneticAlgorithms
         /// <summary>
         /// Скрещивание выбранных особей.
         /// </summary>
-        private List<iVector> Crossing(iVector Parent1, iVector Parent2)
+        private List<Vectors> Crossing(Vectors Parent1, Vectors Parent2)
         {
             //int BreakPoint = RandomNumber.Next(Parent1.Size); /// Точка разрыва.
             int BreakPoint = Population.RandomNumber.Next(Parent1.Size);
-            List<iVector> Children = new List<iVector>();
+            List<Vectors> Children = new List<Vectors>();
             //if (CrossingProbability > RandomNumber.NextDouble())
             if (CrossingProbability > Population.RandomNumber.NextDouble())
             {
@@ -67,13 +67,63 @@ namespace GeneticAlgorithms
             Children.Add(Parent2);
             return Children;
         }
+        
+        /// <summary>
+        /// Одноточечное скрещивание для целочисленного кодирования.
+        /// </summary>
+        private List<Vectors> CrossingIntegerOnePoint(Vectors Parent1, Vectors Parent2)
+        {
+            bool check = false;
+            List<Vectors> Children = new List<Vectors>();
+            /// Этап скрещивания
+            for (int i = 0; i < Parent1.Size; i++)
+            {
+                if (CrossingProbability > RandomNumber.NextDouble())
+                {
+                    check = true;
+                    int mask = (1 << RandomNumber.Next(Vectors.BitsCount)) - 1;
+                    int swapMask = (Convert.ToInt32(Parent1[i]) ^ Convert.ToInt32(Parent2[i])) & mask;
+                    Parent1[i] = Convert.ToInt32(Parent1[i]) ^ swapMask;
+                    Parent2[i] = Convert.ToInt32(Parent2[i]) ^ swapMask;
+                }
+            }
+            /// Этап мутации
+            if (check)
+            {
+                Parent1 = MutationBit(Parent1);
+                Parent2 = MutationBit(Parent2);
+            }
+            Children.Add(Parent1);
+            Children.Add(Parent2);
+            return Children;
+        }
+
+        /// <summary>
+        /// Битовая мутация.
+        /// </summary>
+        private Vectors MutationBit(Vectors Child)
+        {
+            Vectors MutantChild = Child; /// Ребенок мутант.
+            for (int i = 0; i < Child.Size; i++)
+            {
+                for (int j = 0; j < Vectors.BitsCount; j++)
+                {
+                    if (MutationProbability > RandomNumber.NextDouble())
+                    {
+                        int swapMask = 1 << j;
+                        MutantChild[i] = Convert.ToInt32(MutantChild[i])^swapMask; 
+                    }
+                }
+            }
+            return MutantChild;
+        }
 
         /// <summary>
         /// Мутация для вещественной особи.
         /// </summary>
-        private iVector MutationRealValued(iVector child)
+        private Vectors MutationRealValued(Vectors child)
         {
-            iVector MutantChild = child; /// Ребенок мутант.
+            Vectors MutantChild = child; /// Ребенок мутант.
             for (int i = 0; i < child.Size; i++)
             {
                 //if (MutationProbability > RandomNumber.NextDouble())
@@ -86,10 +136,10 @@ namespace GeneticAlgorithms
             return MutantChild;
         }
 
-        public iVector GeneticAlgoritm(Population population)
+        public Vectors GeneticAlgoritm(Population population)
         {
             int k = 0;
-            List<iVector> TemporaryPopulation = new List<iVector>(); /// Временная популяция.
+            List<Vectors> TemporaryPopulation = new List<Vectors>(); /// Временная популяция.
             Population testPopulation = population;
             while (k < MaximumIterations)
             {
@@ -98,7 +148,7 @@ namespace GeneticAlgorithms
                 if (population.Max.FitnessFunction - population.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 while (TemporaryPopulation.Count != population.Count)
                 {
-                    foreach (iVector item in Crossing(population.RandomSelection, population.RandomSelection))
+                    foreach (Vectors item in Crossing(population.RandomSelection, population.RandomSelection))
                     {
                         TemporaryPopulation.Add(item);
                     }
@@ -109,9 +159,34 @@ namespace GeneticAlgorithms
                 TemporaryPopulation.Clear();
                 k++;
             }
-            iVector min = population.Min;
+            Vectors min = population.Min;
             population = null;
             return min;
+        }
+
+        public Vectors GeneticAlgoritmInteger(Population population)
+        {
+            int k = 0;
+            List<Vectors> TemporaryPopulation = new List<Vectors>(); /// Временная популяция.
+            Population ControlPopulation = population; /// Популяция родителей/отобранных особей
+            while (k++ < MaximumIterations)
+            {
+                ControlPopulation = ControlPopulation.GetParentPool(TournamentSize);
+                if (population.Max.FitnessFunction - population.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                while (TemporaryPopulation.Count != ControlPopulation.Count)
+                {
+                    foreach (var item in CrossingIntegerOnePoint(ControlPopulation.RandomSelection, ControlPopulation.RandomSelection))
+                    {
+                        TemporaryPopulation.Add(item);
+                    }
+                }
+
+                ControlPopulation = new Population(TemporaryPopulation);
+                TemporaryPopulation.Clear();
+            }
+            Vectors min = new Vectors(ControlPopulation.Min);
+            ControlPopulation = null;
+            return min.ToReal();
         }
     }
 }
