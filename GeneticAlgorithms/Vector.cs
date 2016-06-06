@@ -66,6 +66,7 @@ namespace myVector
                         }
 
                         return (double)Function.DynamicInvoke(rezult.vector);
+
                     case Coding.Real:
                         return (double)Function.DynamicInvoke(vector);
                     default:
@@ -132,6 +133,27 @@ namespace myVector
             }
         }
 
+        /// <summary>
+        /// Коснтруктор, инициализирущий вектор посредством массива строк.
+        /// </summary>
+        public Vectors(string[] vector)
+        {
+            this.vector = new double[vector.Length];
+            for (int i = 0; i < vector.Length; i++)
+            {
+                this.vector[i] = Convert.ToDouble(vector[i]);
+            }
+        }
+
+        /// <summary>
+        /// Коснтруктор, инициализирущий вектор посредством строки, где каждая точка разделена пробелом.
+        /// </summary>
+        public Vectors(string textVector)
+        {
+            string[] NewVector = textVector.Split(' ');
+            vector = new double[NewVector.Length];
+            for (int i = 0; i < NewVector.Length; i++) { vector[i] = Convert.ToDouble(NewVector[i]); }
+        }
 
         /// <summary>
         /// Операция разности векоторв.

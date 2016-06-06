@@ -39,6 +39,9 @@ namespace GeneticAlgorithms
         /// </summary>
         static Random RandomNumber = new Random();
 
+        /// <summary>
+        /// Коструктор, который устанавливает настройки.
+        /// </summary>
         public GA(double CrossingProbability, double MutationProbability, int TournamentSize)
         {
             this.CrossingProbability = CrossingProbability;
@@ -51,11 +54,9 @@ namespace GeneticAlgorithms
         /// </summary>
         private List<Vectors> Crossing(Vectors Parent1, Vectors Parent2)
         {
-            //int BreakPoint = RandomNumber.Next(Parent1.Size); /// Точка разрыва.
-            int BreakPoint = Population.RandomNumber.Next(Parent1.Size);
+            int BreakPoint = RandomNumber.Next(Parent1.Size); /// Точка разрыва.
             List<Vectors> Children = new List<Vectors>();
-            //if (CrossingProbability > RandomNumber.NextDouble())
-            if (CrossingProbability > Population.RandomNumber.NextDouble())
+            if (CrossingProbability > RandomNumber.NextDouble())
             {
                 double temp = Parent1[BreakPoint];
                 Parent1[BreakPoint] = Parent2[BreakPoint];
@@ -131,11 +132,62 @@ namespace GeneticAlgorithms
             
         }
 
+        /// <summary>
+        /// Однородное скрещивание для целочисленного кодирования.
+        /// </summary>
         private List<Vectors> CrossingIntegerUniform(Vectors Parent1, Vectors Parent2)
         {
-
+            bool check = false;
+            List<Vectors> Children = new List<Vectors>();
+            for (int i = 0; i < Parent1.Size; i++)
+            {
+                /// Этап скрещивания
+                if (CrossingProbability > RandomNumber.NextDouble())
+                {
+                    int mask = 0;
+                    check = true;
+                    for (int j = 0; j < Vectors.BitsCount; j++)
+                    {
+                        if (RandomNumber.NextDouble() > 0.5) mask += 1 << j;
+                    }
+                    int swapMask = (Convert.ToInt32(Parent1[i]) ^ Convert.ToInt32(Parent2[i])) & mask;
+                    Parent1[i] = Convert.ToInt32(Parent1[i]) ^ swapMask;
+                    Parent2[i] = Convert.ToInt32(Parent2[i]) ^ swapMask;
+                }
+            }
+            /// Этап мутации
+            if (check)
+            {
+                Parent1 = MutationBit(Parent1);
+                Parent2 = MutationBit(Parent2);
+            }
+            Children.Add(Parent1);
+            Children.Add(Parent2);
+            return Children;
         }
 
+        /// <summary>
+        /// Скрещивание BLX-a для вещественного кодирования.
+        /// </summary>
+        private List<Vectors> CrossingBLXalpha(Vectors Parent1, Vectors Parent2, double Lambda = 0.5)
+        {
+            List<Vectors> Children = new List<Vectors>();
+            int BreakPoint = RandomNumber.Next(Parent1.Size);
+            for (int i = 0; i < Parent1.Size; i++)
+            {
+                if (CrossingProbability > RandomNumber.NextDouble())
+                {
+                    double temp = Parent1[i];
+                    Parent1[i] = Lambda * Parent1[i] + (1 - Lambda) * Parent2[i];
+                    Parent2[i] = Lambda * Parent2[i] + (1 - Lambda) * temp;
+                    Parent1 = MutationRealValued(Parent1);
+                    Parent2 = MutationRealValued(Parent2);
+                }
+            }
+            Children.Add(Parent1);
+            Children.Add(Parent2);
+            return Children;
+        }
         /// <summary>
         /// Битовая мутация.
         /// </summary>
@@ -164,11 +216,9 @@ namespace GeneticAlgorithms
             Vectors MutantChild = child; /// Ребенок мутант.
             for (int i = 0; i < child.Size; i++)
             {
-                //if (MutationProbability > RandomNumber.NextDouble())
-                if (MutationProbability > Population.RandomNumber.NextDouble())
+                if (MutationProbability > RandomNumber.NextDouble())
                 {
-                    //MutantChild[i] = MutantChild[i] + RandomNumber.NextDouble() - 0.5;
-                    MutantChild[i] = MutantChild[i] + Population.RandomNumber.NextDouble() - 0.5;
+                    MutantChild[i] = MutantChild[i] + RandomNumber.NextDouble() - 0.5;
                 }
             }
             return MutantChild;

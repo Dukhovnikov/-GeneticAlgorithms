@@ -5,16 +5,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeneticAlgorithms"
         mc:Ignorable="d"
-        Title="Генетические Алгоритмы" Height="356.674" Width="647.352">
+        Title="Генетические Алгоритмы" Height="610.309" Width="647.352">
     <Grid ForceCursor="True" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}">
-        <GroupBox x:Name="groupBox" Header="Поисковой интервал" HorizontalAlignment="Left" Margin="277,10,0,0" VerticalAlignment="Top" Height="90" Width="156">
+        <GroupBox x:Name="groupBox" Header="Поисковой интервал" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Height="88" Width="139">
             <Grid>
-                <TextBox x:Name="textBoxStartPoint" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-                <TextBox x:Name="textBoxEndPoint" HorizontalAlignment="Left" Height="23" Margin="10,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+                <TextBox x:Name="textBoxStartPoint" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="102" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="textBoxEndPoint" HorizontalAlignment="Left" Height="23" Margin="10,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="102" VerticalContentAlignment="Center"/>
             </Grid>
         </GroupBox>
-        <TextBox x:Name="textBoxFunction" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="262"/>
-        <Button x:Name="button" Content="Запустить" HorizontalAlignment="Left" Margin="19,38,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
+        <TextBox x:Name="textBoxFunction" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="262" VerticalContentAlignment="Center"/>
+        <Button x:Name="button" Content="Запустить" HorizontalAlignment="Left" Margin="531,156,0,0" VerticalAlignment="Top" Width="75" Click="button_Click" RenderTransformOrigin="-2.83,-2.254" Height="23" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Background="{x:Null}" BorderBrush="#FFB6B6B6"/>
+        <ListBox x:Name="listBoxCoding" HorizontalAlignment="Left" Height="48" Margin="408,15,0,0" VerticalAlignment="Top" Width="221" SelectionChanged="listBoxCoding_SelectionChanged"/>
+        <ListBox x:Name="listBoxCrossing" HorizontalAlignment="Left" Height="72" Margin="408,68,0,0" VerticalAlignment="Top" Width="221"/>
+        <GroupBox x:Name="groupBox1" Header="Основные настройки" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Height="170" Width="199">
+            <Grid>
+                <CheckBox x:Name="checkBox" Content="Мутация" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Height="23" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <CheckBox x:Name="checkBox1" Content="Инверсия" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Height="23" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <CheckBox x:Name="checkBox2" Content="Уплотнение сетки" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,92,0,0" Height="23" VerticalContentAlignment="Center"/>
+                <CheckBox x:Name="checkBox3" Content="Популяционный взрыв" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="textBoxCrossingRate" HorizontalAlignment="Left" Height="21" Margin="96,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="51" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="textBoxInversionRate" HorizontalAlignment="Left" Height="23" Margin="95,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="52" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="textBoxMeshSealRate" HorizontalAlignment="Left" Height="23" Margin="133,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="52" RenderTransformOrigin="0.051,-0.566" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="textBoxMutationRate" HorizontalAlignment="Left" Height="23" Margin="96,36,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="51" VerticalContentAlignment="Center"/>
+                <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Скрещивение" VerticalAlignment="Top" Width="81" Height="21"/>
+            </Grid>
+        </GroupBox>
 
     </Grid>
 </Window>

@@ -59,6 +59,7 @@
     <Compile Include="Matrix.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Vector.cs" />
+    <Compile Include="VisualizationGA.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
