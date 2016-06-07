@@ -7,29 +7,50 @@
         mc:Ignorable="d"
         Title="Генетические Алгоритмы" Height="610.309" Width="647.352">
     <Grid ForceCursor="True" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}">
-        <GroupBox x:Name="groupBox" Header="Поисковой интервал" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" Height="88" Width="139">
+        <GroupBox x:Name="groupBox" Header="Поисковой интервал" HorizontalAlignment="Left" Margin="9,58,0,0" VerticalAlignment="Top" Height="88" Width="139">
             <Grid>
                 <TextBox x:Name="textBoxStartPoint" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="102" VerticalContentAlignment="Center"/>
                 <TextBox x:Name="textBoxEndPoint" HorizontalAlignment="Left" Height="23" Margin="10,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="102" VerticalContentAlignment="Center"/>
             </Grid>
         </GroupBox>
-        <TextBox x:Name="textBoxFunction" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="262" VerticalContentAlignment="Center"/>
-        <Button x:Name="button" Content="Запустить" HorizontalAlignment="Left" Margin="531,156,0,0" VerticalAlignment="Top" Width="75" Click="button_Click" RenderTransformOrigin="-2.83,-2.254" Height="23" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Background="{x:Null}" BorderBrush="#FFB6B6B6"/>
-        <ListBox x:Name="listBoxCoding" HorizontalAlignment="Left" Height="48" Margin="408,15,0,0" VerticalAlignment="Top" Width="221" SelectionChanged="listBoxCoding_SelectionChanged"/>
-        <ListBox x:Name="listBoxCrossing" HorizontalAlignment="Left" Height="72" Margin="408,68,0,0" VerticalAlignment="Top" Width="221"/>
-        <GroupBox x:Name="groupBox1" Header="Основные настройки" HorizontalAlignment="Left" Margin="10,189,0,0" VerticalAlignment="Top" Height="170" Width="199">
+        <TextBox x:Name="textBoxFunction" HorizontalAlignment="Left" Height="23" Margin="9,30,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="262" VerticalContentAlignment="Center"/>
+        <Button x:Name="button" Content="Запустить" HorizontalAlignment="Left" Margin="320,203,0,0" VerticalAlignment="Top" Width="103" Click="button_Click" RenderTransformOrigin="-2.83,-2.254" Height="23" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Background="{x:Null}" BorderBrush="#FFB6B6B6"/>
+        <ListBox x:Name="listBoxCoding" HorizontalAlignment="Left" Height="48" Margin="408,0,0,483" VerticalAlignment="Bottom" Width="221" SelectionChanged="listBoxCoding_SelectionChanged"/>
+        <ListBox x:Name="listBoxCrossing" HorizontalAlignment="Left" Height="72" Margin="408,101,0,0" VerticalAlignment="Top" Width="221" SelectionChanged="listBoxCrossing_SelectionChanged"/>
+        <GroupBox x:Name="groupBox1" Header="Основные настройки" HorizontalAlignment="Left" Margin="10,205,0,0" VerticalAlignment="Top" Height="214" Width="276">
             <Grid>
-                <CheckBox x:Name="checkBox" Content="Мутация" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Height="23" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <CheckBox x:Name="checkBox1" Content="Инверсия" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Height="23" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <CheckBox x:Name="checkBox2" Content="Уплотнение сетки" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,92,0,0" Height="23" VerticalContentAlignment="Center"/>
-                <CheckBox x:Name="checkBox3" Content="Популяционный взрыв" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="textBoxCrossingRate" HorizontalAlignment="Left" Height="21" Margin="96,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="51" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="textBoxInversionRate" HorizontalAlignment="Left" Height="23" Margin="95,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="52" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="textBoxMeshSealRate" HorizontalAlignment="Left" Height="23" Margin="133,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="52" RenderTransformOrigin="0.051,-0.566" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="textBoxMutationRate" HorizontalAlignment="Left" Height="23" Margin="96,36,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="51" VerticalContentAlignment="Center"/>
+                <CheckBox x:Name="checkBoxMutation" Content="Мутация" HorizontalAlignment="Left" Margin="17,64,0,0" VerticalAlignment="Top" Height="23" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Checked="checkBoxMutation_Checked" Unchecked="checkBoxMutation_Unchecked"/>
+                <CheckBox x:Name="checkBoxInversion" Content="Инверсия" HorizontalAlignment="Left" Margin="17,92,0,0" VerticalAlignment="Top" Height="23" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Checked="checkBoxInversion_Checked" Unchecked="checkBoxInversion_Unchecked"/>
+                <CheckBox x:Name="checkBoxMeshSeal" Content="Уплотнение сетки" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="17,120,0,0" Height="23" VerticalContentAlignment="Center"/>
+                <CheckBox x:Name="checkBoxPopulationSpike" Content="Популяционный всплеск" HorizontalAlignment="Left" Margin="17,148,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="textBoxCrossingRate" HorizontalAlignment="Left" Height="21" Margin="103,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="52" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="textBoxInversionRate" HorizontalAlignment="Left" Height="23" Margin="102,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="52" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="textBoxMeshSealRate" HorizontalAlignment="Left" Height="23" Margin="140,120,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="52" RenderTransformOrigin="0.051,-0.566" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="textBoxMutationRate" HorizontalAlignment="Left" Height="23" Margin="103,64,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="51" VerticalContentAlignment="Center"/>
                 <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Скрещивение" VerticalAlignment="Top" Width="81" Height="21"/>
+                <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,36,0,0" TextWrapping="Wrap" Text="Размер турнира" VerticalAlignment="Top" Height="23"/>
+                <TextBox x:Name="textBoxTournamentSize" HorizontalAlignment="Left" Height="23" Margin="103,36,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="52" VerticalContentAlignment="Center"/>
             </Grid>
         </GroupBox>
+        <Button x:Name="button1" Content="По умолчанию" HorizontalAlignment="Left" Margin="320,254,0,0" VerticalAlignment="Top" Width="103" Height="23" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="#FFB8B1B1" Click="button1_Click"/>
+        <TextBox x:Name="textBoxMaximumIteration" HorizontalAlignment="Left" Height="23" Margin="153,174,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="57"/>
+        <GroupBox x:Name="groupBox2" Header="GroupBox" HorizontalAlignment="Left" Margin="10,424,0,0" VerticalAlignment="Top" Height="145" Width="619">
+            <Grid>
+                <TextBox x:Name="textBoxRezultGA" HorizontalAlignment="Left" Height="48" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="587"/>
+            </Grid>
+        </GroupBox>
+        <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="28,174,0,0" TextWrapping="Wrap" Text="Количество итераций" VerticalAlignment="Top" Height="23"/>
+        <TextBlock x:Name="textBlock3" HorizontalAlignment="Left" Margin="153,101,0,0" TextWrapping="Wrap" Text="Размер популяции" VerticalAlignment="Top" Height="23"/>
+        <TextBox x:Name="textBoxSizePopulation" HorizontalAlignment="Left" Height="23" Margin="261,101,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50"/>
+        <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="335,375,0,0" TextWrapping="Wrap" Text="Количество разрядов кодирования" VerticalAlignment="Top" Height="23"/>
+        <TextBox x:Name="textBoxBitsCount" HorizontalAlignment="Left" Height="23" Margin="535,375,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="49"/>
+        <Menu x:Name="menu" Height="20" VerticalAlignment="Top">
+            <MenuItem Header="Файл" Height="20">
+                <MenuItem Header="Стандартные функции" HorizontalAlignment="Center" Height="20">
+                    <MenuItem Header="8x1^2 + 4x1x2 + 5x2^2" HorizontalAlignment="Left" Height="20" Click="MenuItem_Click"/>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
 
     </Grid>
 </Window>

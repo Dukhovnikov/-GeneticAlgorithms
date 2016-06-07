@@ -10,29 +10,56 @@ using System.Windows;
 namespace GeneticAlgorithms
 {
     /// <summary>
+    /// Делегат для различных типов скрещивания.
+    /// </summary>
+    public delegate List<Vectors> CrossingType(Vectors Parent1, Vectors Parent2);
+    /// <summary>
+    /// Делегат для различных типов генетического алгоритма.
+    /// </summary>
+    public delegate Vectors GeneticAlgoritmType(Population population);
+
+    /// <summary>
     /// Класс, реализующий генетический алгоритм.
     /// </summary>
-    sealed class GA
+    static class GA
     {
+        static CrossingType Crossing;
+        static GeneticAlgoritmType GeneticAlgoritm;
+
         /// <summary>
         /// Вероятность скрещивания.
         /// </summary>
-        public readonly double CrossingProbability;
+        public static double CrossingProbability { get; set; }
 
         /// <summary>
         /// Вероятность мутации.
         /// </summary>
-        public readonly double MutationProbability;
+        public static double MutationProbability { get; set; } = -1;
+
+        /// <summary>
+        /// Вероятность инверсии.
+        /// </summary>
+        public static double InversionProbability { get; set; } = -1;
+
+        /// <summary>
+        /// Коэффициент скрещивания, при BLXa - скрещивании.
+        /// </summary>
+        public static double BLXaRate { get; set; }
 
         /// <summary>
         /// Максимальное количество итераций.
         /// </summary>
-        public int MaximumIterations { get; set; } = 100;
+        public static int MaximumIterations { get; set; }
 
         /// <summary>
         /// Размер турнира.
         /// </summary>
-        public int TournamentSize { get; set; }
+        public static int TournamentSize { get; set; }
+
+        /// <summary>
+        /// Размер популяции.
+        /// </summary>
+        public static int SizePopulation { get; set; }
 
         /// <summary>
         /// Переменная для генерации случайного числа из заданного промежутка.
@@ -40,19 +67,9 @@ namespace GeneticAlgorithms
         static Random RandomNumber = new Random();
 
         /// <summary>
-        /// Коструктор, который устанавливает настройки.
-        /// </summary>
-        public GA(double CrossingProbability, double MutationProbability, int TournamentSize)
-        {
-            this.CrossingProbability = CrossingProbability;
-            this.MutationProbability = MutationProbability;
-            this.TournamentSize = TournamentSize;
-        }
-
-        /// <summary>
         /// Скрещивание выбранных особей.
         /// </summary>
-        private List<Vectors> Crossing(Vectors Parent1, Vectors Parent2)
+        private static List<Vectors> CrossingRealOnePoint(Vectors Parent1, Vectors Parent2)
         {
             int BreakPoint = RandomNumber.Next(Parent1.Size); /// Точка разрыва.
             List<Vectors> Children = new List<Vectors>();
@@ -61,8 +78,11 @@ namespace GeneticAlgorithms
                 double temp = Parent1[BreakPoint];
                 Parent1[BreakPoint] = Parent2[BreakPoint];
                 Parent2[BreakPoint] = temp;
-                Parent1 = MutationRealValued(Parent1);
-                Parent2 = MutationRealValued(Parent2);
+                if (onMutation)
+                {
+                    Parent1 = MutationRealValued(Parent1);
+                    Parent2 = MutationRealValued(Parent2);
+                }
             }
             Children.Add(Parent1);
             Children.Add(Parent2);
@@ -72,7 +92,7 @@ namespace GeneticAlgorithms
         /// <summary>
         /// Одноточечное скрещивание для целочисленного кодирования.
         /// </summary>
-        private List<Vectors> CrossingIntegerOnePoint(Vectors Parent1, Vectors Parent2)
+        private static List<Vectors> CrossingIntegerOnePoint(Vectors Parent1, Vectors Parent2)
         {
             bool check = false;
             List<Vectors> Children = new List<Vectors>();
@@ -89,10 +109,15 @@ namespace GeneticAlgorithms
                 }
             }
             /// Этап мутации
-            if (check)
+            if (check && onMutation)
             {
                 Parent1 = MutationBit(Parent1);
                 Parent2 = MutationBit(Parent2);
+            }
+            if (onInversion)
+            {
+                Parent1 = InversionBit(Parent1);
+                Parent2 = InversionBit(Parent2);
             }
             Children.Add(Parent1);
             Children.Add(Parent2);
@@ -102,7 +127,7 @@ namespace GeneticAlgorithms
         /// <summary>
         /// Двухточечное скрещиание для целочисленного кодирования.
         /// </summary>
-        private List<Vectors> CrossingIntegerTwoPoint(Vectors Parent1, Vectors Parent2)
+        private static List<Vectors> CrossingIntegerTwoPoint(Vectors Parent1, Vectors Parent2)
         {
             bool check = false;
             List<Vectors> Children = new List<Vectors>();
@@ -120,22 +145,27 @@ namespace GeneticAlgorithms
                     Parent2[i] = Convert.ToInt32(Parent2[i]) ^ swapMask;
                 }
             }
-                /// Этап мутации
-                if (check)
-                {
-                    Parent1 = MutationBit(Parent1);
-                    Parent2 = MutationBit(Parent2);
-                }
-                Children.Add(Parent1);
-                Children.Add(Parent2);
-                return Children;
+            /// Этап мутации
+            if (check && onMutation)
+            {
+                Parent1 = MutationBit(Parent1);
+                Parent2 = MutationBit(Parent2);
+            }
+            if (onInversion)
+            {
+                Parent1 = InversionBit(Parent1);
+                Parent2 = InversionBit(Parent2);
+            }
+            Children.Add(Parent1);
+            Children.Add(Parent2);
+            return Children;
             
         }
 
         /// <summary>
         /// Однородное скрещивание для целочисленного кодирования.
         /// </summary>
-        private List<Vectors> CrossingIntegerUniform(Vectors Parent1, Vectors Parent2)
+        private static List<Vectors> CrossingIntegerUniform(Vectors Parent1, Vectors Parent2)
         {
             bool check = false;
             List<Vectors> Children = new List<Vectors>();
@@ -156,10 +186,15 @@ namespace GeneticAlgorithms
                 }
             }
             /// Этап мутации
-            if (check)
+            if (check && onMutation)
             {
                 Parent1 = MutationBit(Parent1);
                 Parent2 = MutationBit(Parent2);
+            }
+            if (onInversion)
+            {
+                Parent1 = InversionBit(Parent1);
+                Parent2 = InversionBit(Parent2);
             }
             Children.Add(Parent1);
             Children.Add(Parent2);
@@ -169,7 +204,7 @@ namespace GeneticAlgorithms
         /// <summary>
         /// Скрещивание BLX-a для вещественного кодирования.
         /// </summary>
-        private List<Vectors> CrossingBLXalpha(Vectors Parent1, Vectors Parent2, double Lambda = 0.5)
+        private static List<Vectors> CrossingBLXalpha(Vectors Parent1, Vectors Parent2)
         {
             List<Vectors> Children = new List<Vectors>();
             int BreakPoint = RandomNumber.Next(Parent1.Size);
@@ -178,20 +213,24 @@ namespace GeneticAlgorithms
                 if (CrossingProbability > RandomNumber.NextDouble())
                 {
                     double temp = Parent1[i];
-                    Parent1[i] = Lambda * Parent1[i] + (1 - Lambda) * Parent2[i];
-                    Parent2[i] = Lambda * Parent2[i] + (1 - Lambda) * temp;
-                    Parent1 = MutationRealValued(Parent1);
-                    Parent2 = MutationRealValued(Parent2);
+                    Parent1[i] = BLXaRate * Parent1[i] + (1 - BLXaRate) * Parent2[i];
+                    Parent2[i] = BLXaRate * Parent2[i] + (1 - BLXaRate) * temp;
+                    if (onMutation)
+                    {
+                        Parent1 = MutationRealValued(Parent1);
+                        Parent2 = MutationRealValued(Parent2);
+                    }
                 }
             }
             Children.Add(Parent1);
             Children.Add(Parent2);
             return Children;
         }
+
         /// <summary>
         /// Битовая мутация.
         /// </summary>
-        private Vectors MutationBit(Vectors Child)
+        private static Vectors MutationBit(Vectors Child)
         {
             Vectors MutantChild = Child; /// Ребенок мутант.
             for (int i = 0; i < Child.Size; i++)
@@ -209,9 +248,29 @@ namespace GeneticAlgorithms
         }
 
         /// <summary>
+        /// Битовая инверсия.
+        /// </summary>
+        private static Vectors InversionBit(Vectors Child)
+        {
+            Vectors MutantChild = Child; /// Ребенок мутант.
+            for (int i = 0; i < Child.Size; i++)
+            {
+                for (int j = 0; j < Vectors.BitsCount; j++)
+                {
+                    if (InversionProbability > RandomNumber.NextDouble())
+                    {
+                        int swapMask = 1 << j;
+                        MutantChild[i] = Convert.ToInt32(MutantChild[i]) ^ swapMask;
+                    }
+                }
+            }
+            return MutantChild;
+        }
+
+        /// <summary>
         /// Мутация для вещественной особи.
         /// </summary>
-        private Vectors MutationRealValued(Vectors child)
+        private static Vectors MutationRealValued(Vectors child)
         {
             Vectors MutantChild = child; /// Ребенок мутант.
             for (int i = 0; i < child.Size; i++)
@@ -227,38 +286,7 @@ namespace GeneticAlgorithms
         /// <summary>
         /// Генетический алгоритм для вещественного кодирования.
         /// </summary>
-        public Vectors GeneticAlgoritm(Population population)
-        {
-            int k = 0;
-            List<Vectors> TemporaryPopulation = new List<Vectors>(); /// Временная популяция.
-            Population testPopulation = population;
-            while (k < MaximumIterations)
-            {
-                //population = population.GetParentPool(TournamentSize);
-                testPopulation = population.GetParentPool(TournamentSize);
-                if (population.Max.FitnessFunction - population.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                while (TemporaryPopulation.Count != population.Count)
-                {
-                    foreach (Vectors item in Crossing(population.RandomSelection, population.RandomSelection))
-                    {
-                        TemporaryPopulation.Add(item);
-                    }
-                }
-
-                population = new Population(TemporaryPopulation);
-                if (k == 99) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                TemporaryPopulation.Clear();
-                k++;
-            }
-            Vectors min = population.Min;
-            population = null;
-            return min;
-        }
-
-        /// <summary>
-        /// Генетический алгоритм, для целочисленного кодирования.
-        /// </summary>
-        public Vectors GeneticAlgoritmInteger(Population population)
+        public static Vectors GeneticAlgoritmReal(Population population)
         {
             int k = 0;
             List<Vectors> TemporaryPopulation = new List<Vectors>(); /// Временная популяция.
@@ -266,10 +294,38 @@ namespace GeneticAlgorithms
             while (k++ < MaximumIterations)
             {
                 ControlPopulation = ControlPopulation.GetParentPool(TournamentSize);
-                if (population.Max.FitnessFunction - population.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                //if (population.Max.FitnessFunction - population.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 while (TemporaryPopulation.Count != ControlPopulation.Count)
                 {
-                    foreach (var item in CrossingIntegerOnePoint(ControlPopulation.RandomSelection, ControlPopulation.RandomSelection))
+                    foreach (Vectors item in Crossing(population.RandomSelection, population.RandomSelection))
+                    {
+                        TemporaryPopulation.Add(item);
+                    }
+                }
+
+                ControlPopulation = new Population(TemporaryPopulation);
+                TemporaryPopulation.Clear();
+            }
+            Vectors min = new Vectors(ControlPopulation.Min);
+            ControlPopulation = null;
+            return min;
+        }
+
+        /// <summary>
+        /// Генетический алгоритм, для целочисленного кодирования.
+        /// </summary>
+        public static Vectors GeneticAlgoritmInteger(Population population)
+        {
+            int k = 0;
+            List<Vectors> TemporaryPopulation = new List<Vectors>(); /// Временная популяция.
+            Population ControlPopulation = population; /// Популяция родителей/отобранных особей
+            while (k++ < MaximumIterations)
+            {
+                ControlPopulation = ControlPopulation.GetParentPool(TournamentSize);
+                //if (population.Max.FitnessFunction - population.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                while (TemporaryPopulation.Count != ControlPopulation.Count)
+                {
+                    foreach (var item in Crossing(ControlPopulation.RandomSelection, ControlPopulation.RandomSelection))
                     {
                         TemporaryPopulation.Add(item);
                     }
@@ -282,5 +338,66 @@ namespace GeneticAlgorithms
             ControlPopulation = null;
             return min.ToReal();
         }
+
+        public static void AssignedSetting()
+        {
+
+        }
+
+        /// <summary>
+        /// Вспомогательная функция, для выбора нужного кодирования и метода скрещивания.
+        /// </summary>
+        public static void AssignedDelegat(int typeGA, int typeCrossing)
+        {
+            switch (typeGA)
+            {
+                case 0:
+
+                    GeneticAlgoritm = GeneticAlgoritmReal;
+                    switch (typeCrossing)
+                    {
+                        case 0: Crossing = CrossingRealOnePoint; break;
+                        case 1: Crossing = CrossingBLXalpha; break;
+                    }
+                    break;
+
+
+                case 1:
+                    GeneticAlgoritm = GeneticAlgoritmInteger;
+                    switch (typeCrossing)
+                    {
+                        case 0: Crossing = CrossingIntegerOnePoint; break;
+                        case 1: Crossing = CrossingIntegerTwoPoint; break;
+                        case 2: Crossing = CrossingIntegerUniform; break;
+                    }
+                    break;
+            }
+        }
+
+        public static void defaultSetting()
+        {
+            CrossingProbability = 0.7;
+            MutationProbability = 0.1;
+            InversionProbability = 0.05;
+            TournamentSize = 2;
+            MaximumIterations = 100;
+            BLXaRate = 0.5;
+            SizePopulation = 100;
+        }
+
+        public static Vectors mainGeneticAlgoritm()
+        {
+            Vectors result = GeneticAlgoritm(new Population(SizePopulation));
+            return result;
+        }
+
+        /// <summary>
+        /// Свойство, которое возвращает true если мутация включена.
+        /// </summary>
+        public static bool onMutation => (MutationProbability > 0) ? true : false;
+        /// <summary>
+        /// Свойство, которое возвращает true если инверсия включена.
+        /// </summary>
+        public static bool onInversion => (InversionProbability > 0) ? true : false;
     }
 }

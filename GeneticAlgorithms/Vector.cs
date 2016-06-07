@@ -150,6 +150,7 @@ namespace myVector
         /// </summary>
         public Vectors(string textVector)
         {
+            if (textVector.Contains(".")) textVector = textVector.Replace(".", ",");
             string[] NewVector = textVector.Split(' ');
             vector = new double[NewVector.Length];
             for (int i = 0; i < NewVector.Length; i++) { vector[i] = Convert.ToDouble(NewVector[i]); }
@@ -249,6 +250,9 @@ namespace myVector
             return vector;
         }
 
+        /// <summary>
+        /// Вычисление истинного значения вектора при целочисленном кодировании.
+        /// </summary>
         public Vectors ToReal()
         {
             Vectors RealVector = new Vectors(Size);

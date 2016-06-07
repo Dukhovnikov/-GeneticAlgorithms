@@ -13,7 +13,7 @@ namespace GeneticAlgorithms
     /// <summary>
     /// Класс реализующий популяцию, как набор особей.
     /// </summary>
-    class Population
+    public class Population
     {
         /// <summary>
         /// Класс реализующий популяцию, как набор особей.
@@ -73,15 +73,15 @@ namespace GeneticAlgorithms
         /// <summary>
         /// Конструктор, генерирующий случайную популяцию заданного размера.
         /// </summary>
-        public Population(Vectors StartPoint, Vectors EndPoint, int SizePopulation)
+        public Population(int SizePopulation, Coding CodingType = Coding.Real)
         {
             population = new List<Vectors>();
             for (int i = 0; i < SizePopulation; i++)
             {
-                Vectors individ = new Vectors(StartPoint.Size);
-                for (int j = 0; j < StartPoint.Size; j++)
+                Vectors individ = new Vectors(Vectors.StartPoint.Size);
+                for (int j = 0; j < Vectors.StartPoint.Size; j++)
                 {
-                    individ[j] = RandomNumber.NextDouble() * (EndPoint[j] - StartPoint[j]) + StartPoint[j];
+                    individ[j] = RandomNumber.NextDouble() * (Vectors.EndPoint[j] - Vectors.StartPoint[j]) + Vectors.StartPoint[j];
                 }
                 population.Add(individ);
             }
@@ -90,25 +90,59 @@ namespace GeneticAlgorithms
         /// <summary>
         /// Конструктор, генерирующий случайную популяцию заданного размера.
         /// </summary>
-        public Population(Vectors StartPoint, Vectors EndPoint, int SizePopulation, Coding CodingType = Coding.Integer, byte BitsCount = 10)
+        public Population(int SizePopulation, Coding CodingType = Coding.Integer, int xz = 1)
         {
-            Vectors.BitsCount = BitsCount;
-            Vectors.StartPoint = StartPoint;
-            Vectors.EndPoint = EndPoint;
             population = new List<Vectors>();
 
             for (int i = 0; i < SizePopulation; i++)
             {
-                Vectors individ = new Vectors(StartPoint.Size);
+                Vectors individ = new Vectors(Vectors.StartPoint.Size);
 
-                for (int j = 0; j < StartPoint.Size; j++)
+                for (int j = 0; j < Vectors.StartPoint.Size; j++)
                 {
-                    individ[j] = RandomNumber.Next(1,1 << BitsCount) - 1;
+                    individ[j] = RandomNumber.Next(1,1 << Vectors.BitsCount) - 1;
                 }
 
                 population.Add(individ);
             }
 
+        }
+        
+        /// <summary>
+        /// Умный коснтруктор, который создает популяцию с вещественным/целочисленным кодированием.
+        /// </summary>
+        public Population(int SizePopulation)
+        {
+            population = new List<Vectors>();
+            
+            switch (Vectors.CodingType)
+            {
+                /// Вещественное кодирование---------------------------------------------------------------------------------------------------
+                case Coding.Real:
+                    for (int i = 0; i < SizePopulation; i++)
+                    {
+                        Vectors individ = new Vectors(Vectors.StartPoint.Size);
+                        for (int j = 0; j < Vectors.StartPoint.Size; j++)
+                        {
+                            individ[j] = RandomNumber.NextDouble() * (Vectors.EndPoint[j] - Vectors.StartPoint[j]) + Vectors.StartPoint[j];
+                        }
+                        population.Add(individ);
+                    }
+                        break;
+
+                /// Целочисленное кодирование---------------------------------------------------------------------------------------------------
+                case Coding.Integer:
+                    for (int i = 0; i < SizePopulation; i++)
+                    {
+                        Vectors individ = new Vectors(Vectors.StartPoint.Size);
+                        for (int j = 0; j < Vectors.StartPoint.Size; j++)
+                        {
+                            individ[j] = RandomNumber.Next(1 << Vectors.BitsCount);
+                        }
+                        population.Add(individ);
+                    }
+                        break;
+            }
         } 
 
         /// <summary>
@@ -137,6 +171,37 @@ namespace GeneticAlgorithms
                 ParentPool.Add(new Vectors((TournamentSelection(TournamentSize))));
             }
             return new Population(ParentPool);
+        }
+
+        /// <summary>
+        /// Оператор популяционного всплеска популяции.
+        /// </summary>
+        public void PopulationSpike(double PartPopulation = 0.6)
+        {
+            int CountNewIndivid = Convert.ToInt32(PartPopulation*Count);
+            Vectors individ;
+            for (int i = CountNewIndivid; i > 0; i--)
+            {
+                switch (Vectors.CodingType)
+                {
+                    case Coding.Integer:
+                        individ = new Vectors(Vectors.StartPoint.Size);
+                        for (int j = 0; j < Vectors.StartPoint.Size; j++)
+                        {
+                            individ[j] = RandomNumber.Next(1 << Vectors.BitsCount);
+                        }
+                        this[RandomNumber.Next(Count)] = individ;
+                        break;
+                    case Coding.Real:
+                        individ = new Vectors(Vectors.StartPoint.Size);
+                        for (int j = 0; j < Vectors.StartPoint.Size; j++)
+                        {
+                            individ[j] = RandomNumber.NextDouble() * (Vectors.EndPoint[j] - Vectors.StartPoint[j]) + Vectors.StartPoint[j];
+                        }
+                        this[RandomNumber.Next(Count)] = individ;
+                        break;
+                }
+            }
         }
 
         /// <summary>
