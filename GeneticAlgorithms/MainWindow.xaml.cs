@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using myVector;
 using MathParser;
+using DrawGraph;
 namespace GeneticAlgorithms
 {
     /// <summary>
@@ -108,6 +109,7 @@ namespace GeneticAlgorithms
 
         private void Run()
         {
+            GA.ClearData();
             if (textBoxFunction.Text == "") { MessageBox.Show("Функция не задана", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning); return; } /// Проверка введена ли функция.
             int i = 0; /// Количество переменных в уравнении.
             while (textBoxFunction.Text.Contains("x" + (i + 1))) i++; /// Подсчет количества переменных.
@@ -128,10 +130,7 @@ namespace GeneticAlgorithms
             Vectors minimum = GA.mainGeneticAlgoritm();
 
             textBoxRezultGA.Text = "Найденный минимум: [ " + minimum.ToString() + " ]" + Environment.NewLine;
-            
-            //Result.Text = "Начальная точка: [ " + startpoint.ToString() + " ]" + Environment.NewLine;
-            //Result.Text += "Найденный минимум: [ " + minimum.ToString() + " ]" + Environment.NewLine;
-            //Result.Text += "Количество итераций: " + k;
+            if (GA.DegenerationTrack && checkBoxIsPopulationConfluent.IsChecked == true) { textBoxRezultGA.Text += "У текущего решения была вырожденная популяция"; }
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -147,9 +146,35 @@ namespace GeneticAlgorithms
             textBoxSizePopulation.Text = "30";
             textBoxCrossingRate.Text = "0,9";
             textBoxMutationRate.Text = "0,05";
+            checkBoxMutation.IsChecked = true;
             textBoxTournamentSize.Text = "4";
             textBoxMaximumIteration.Text = "50";
             textBoxBitsCount.Text = "12";
+        }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            Form1 form = new Form1(GA.Data.MinValues, GA.Data.MinValues);
+        }
+
+        private void checkBoxPopulationSpike_Checked(object sender, RoutedEventArgs e)
+        {
+            GA.PopulationSpike = true;
+        }
+
+        private void checkBoxPopulationSpike_Unchecked(object sender, RoutedEventArgs e)
+        {
+            GA.PopulationSpike = false;
+        }
+
+        private void checkBoxMeshSeal_Checked(object sender, RoutedEventArgs e)
+        {
+            GA.PopulationMeshSeal = true;
+        }
+
+        private void checkBoxMeshSeal_Unchecked(object sender, RoutedEventArgs e)
+        {
+            GA.PopulationMeshSeal = false;
         }
     }
 }

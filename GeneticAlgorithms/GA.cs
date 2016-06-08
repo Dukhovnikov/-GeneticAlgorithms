@@ -23,8 +23,18 @@ namespace GeneticAlgorithms
     /// </summary>
     static class GA
     {
+        /// <summary>
+        /// Обобщенная функция скрещивания.
+        /// </summary>
         static CrossingType Crossing;
+        /// <summary>
+        /// Обобщенная функция ГА.
+        /// </summary>
         static GeneticAlgoritmType GeneticAlgoritm;
+        /// <summary>
+        /// Представляет собой экземпляр класса, хранящего данные, для заполнения ячеек графика.
+        /// </summary>
+        public static PopulationData Data = new PopulationData();
 
         /// <summary>
         /// Вероятность скрещивания.
@@ -60,6 +70,20 @@ namespace GeneticAlgorithms
         /// Размер популяции.
         /// </summary>
         public static int SizePopulation { get; set; }
+
+        /// <summary>
+        /// Свойство, контролирующее, включен ли популяционный всплеск.
+        /// </summary>
+        public static bool PopulationSpike { get; set; } = false;
+        /// <summary>
+        /// Свойство, контролирующее, включено ли уплотнение сетки. 
+        /// </summary>
+        public static bool PopulationMeshSeal { get; set; } = false;
+
+        /// <summary>
+        /// Свойство, остелживающее, на существование вырожденной популяции.
+        /// </summary>
+        public static bool DegenerationTrack { get; set; } = false;
 
         /// <summary>
         /// Переменная для генерации случайного числа из заданного промежутка.
@@ -291,10 +315,23 @@ namespace GeneticAlgorithms
             int k = 0;
             List<Vectors> TemporaryPopulation = new List<Vectors>(); /// Временная популяция.
             Population ControlPopulation = population; /// Популяция родителей/отобранных особей
+            #region Запись данных для анализа
+            Data.MinValues.Add(ControlPopulation.Min.FitnessFunction);
+            Data.MiddleValues.Add(ControlPopulation.Max.FitnessFunction - ControlPopulation.Min.FitnessFunction);
+            #endregion
             while (k++ < MaximumIterations)
             {
                 ControlPopulation = ControlPopulation.GetParentPool(TournamentSize);
-                //if (population.Max.FitnessFunction - population.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                #region Если популяционный всплеск включен
+                if (PopulationSpike)
+                {
+                    if (ControlPopulation.Max.FitnessFunction - ControlPopulation.Min.FitnessFunction < 0.01) DegenerationCount++;
+                    if (DegenerationCount > 3) ControlPopulation.PopulationSpike();
+                }
+                #endregion
+
+                if (ControlPopulation.Max.FitnessFunction - ControlPopulation.Min.FitnessFunction < 0.01) { DegenerationTrack = true; }
+
                 while (TemporaryPopulation.Count != ControlPopulation.Count)
                 {
                     foreach (Vectors item in Crossing(population.RandomSelection, population.RandomSelection))
@@ -304,6 +341,10 @@ namespace GeneticAlgorithms
                 }
 
                 ControlPopulation = new Population(TemporaryPopulation);
+                #region Запись данных для анализа
+                Data.MinValues.Add(ControlPopulation.Min.FitnessFunction);
+                Data.MiddleValues.Add(ControlPopulation.Max.FitnessFunction - ControlPopulation.Min.FitnessFunction);
+                #endregion
                 TemporaryPopulation.Clear();
             }
             Vectors min = new Vectors(ControlPopulation.Min);
@@ -319,10 +360,29 @@ namespace GeneticAlgorithms
             int k = 0;
             List<Vectors> TemporaryPopulation = new List<Vectors>(); /// Временная популяция.
             Population ControlPopulation = population; /// Популяция родителей/отобранных особей
+            #region Запись данных для анализа
+            Data.MinValues.Add(ControlPopulation.Min.FitnessFunction);
+            Data.MiddleValues.Add(ControlPopulation.Max.FitnessFunction - ControlPopulation.Min.FitnessFunction);
+            #endregion
             while (k++ < MaximumIterations)
             {
                 ControlPopulation = ControlPopulation.GetParentPool(TournamentSize);
-                //if (population.Max.FitnessFunction - population.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                #region Если популяционный всплеск включен
+                if (PopulationSpike)
+                {
+                    if (ControlPopulation.Max.FitnessFunction - ControlPopulation.Min.FitnessFunction < 0.01) DegenerationCount++;
+                    if (DegenerationCount > 3) ControlPopulation.PopulationSpike();
+                }
+                #endregion
+                #region Если уплотнение сетки включено
+                if (PopulationMeshSeal)
+                {
+                    if (k > MaximumIterations * 0.6) Vectors.BitsCount = Convert.ToByte(Vectors.BitsCount * 2);
+                }
+                #endregion
+
+                if (ControlPopulation.Max.FitnessFunction - ControlPopulation.Min.FitnessFunction < 0.01) { DegenerationTrack = true; }
+
                 while (TemporaryPopulation.Count != ControlPopulation.Count)
                 {
                     foreach (var item in Crossing(ControlPopulation.RandomSelection, ControlPopulation.RandomSelection))
@@ -330,18 +390,16 @@ namespace GeneticAlgorithms
                         TemporaryPopulation.Add(item);
                     }
                 }
-
                 ControlPopulation = new Population(TemporaryPopulation);
+                #region Запись данных для анализа
+                Data.MinValues.Add(ControlPopulation.Min.FitnessFunction);
+                Data.MiddleValues.Add(ControlPopulation.Max.FitnessFunction - ControlPopulation.Min.FitnessFunction);
+                #endregion
                 TemporaryPopulation.Clear();
             }
             Vectors min = new Vectors(ControlPopulation.Min);
             ControlPopulation = null;
             return min.ToReal();
-        }
-
-        public static void AssignedSetting()
-        {
-
         }
 
         /// <summary>
@@ -374,6 +432,9 @@ namespace GeneticAlgorithms
             }
         }
 
+        /// <summary>
+        /// Функция задает настройки Га по умолчанию.
+        /// </summary>
         public static void defaultSetting()
         {
             CrossingProbability = 0.7;
@@ -385,10 +446,22 @@ namespace GeneticAlgorithms
             SizePopulation = 100;
         }
 
+        /// <summary>
+        /// Главный алгоритм ГА.
+        /// </summary>
+        /// <returns></returns>
         public static Vectors mainGeneticAlgoritm()
         {
             Vectors result = GeneticAlgoritm(new Population(SizePopulation));
             return result;
+        }
+        
+        /// <summary>
+        /// Удаление заполненных данных.
+        /// </summary>
+        public static void ClearData()
+        {
+            Data = new PopulationData();
         }
 
         /// <summary>
@@ -399,5 +472,10 @@ namespace GeneticAlgorithms
         /// Свойство, которое возвращает true если инверсия включена.
         /// </summary>
         public static bool onInversion => (InversionProbability > 0) ? true : false;
+
+        /// <summary>
+        /// Переменная-счетчик, для подсчета количества выродлений.
+        /// </summary>
+        private static int DegenerationCount { get; set; } = 0;
     }
 }
