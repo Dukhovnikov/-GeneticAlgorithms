@@ -45,7 +45,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="ZedGraph">
-      <HintPath>..\..\..\Users\Духовников\YandexDisk\3 курс\6 семестр\Практика\zedgraph_howto\ZedGraph.dll</HintPath>
+      <HintPath>..\..\..\Users\Данил\YandexDisk\3 курс\6 семестр\Практика\zedgraph_howto\ZedGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

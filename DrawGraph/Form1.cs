@@ -40,9 +40,8 @@ namespace DrawGraph
             /// которая будет рисоваться голубым цветом (Color.Blue),
             /// Опорные точки выделяться не будут (SymbolType.None)
             LineItem myCurveMax = pane.AddCurve("Функция лидера", listmax, Color.Red, SymbolType.None);
-            //LineItem myCurveMin = pane.AddCurve("Средняя фукнция", listmax, Color.Blue, SymbolType.Plus);
+            LineItem myCurveMin = pane.AddCurve("Средняя фукнция", listmiddle, Color.Blue, SymbolType.None);
 
-            
             /// Вызываем метод AxisChange (), чтобы обновить данные об осях. 
             /// В противном случае на рисунке будет показана только часть графика, 
             /// которая умещается в интервалы по осям, установленные по умолчанию.

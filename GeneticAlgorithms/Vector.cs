@@ -32,6 +32,17 @@ namespace myVector
             return FitnessFunction.CompareTo(other.FitnessFunction);
         }
 
+        // Реализуем интерфейс IComparable<T>
+        //public int CompareTo(Vectors other)
+        //{
+        //    if (this.FitnessFunction > other.FitnessFunction)
+        //        return 1;
+        //    if (this.FitnessFunction < other.FitnessFunction)
+        //        return -1;
+        //    else
+        //        return 0;
+        //}
+
         /// <summary>
         /// Итератор, выполняющий перебор элементов популяции.
         /// </summary>
