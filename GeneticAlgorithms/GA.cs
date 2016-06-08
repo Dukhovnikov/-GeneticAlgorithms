@@ -377,7 +377,7 @@ namespace GeneticAlgorithms
                 #region Если уплотнение сетки включено
                 if (PopulationMeshSeal)
                 {
-                    if (k > MaximumIterations * 0.6) Vectors.BitsCount = Convert.ToByte(Vectors.BitsCount * 2);
+                    if (k > MaximumIterations * 0.6) Vectors.BitsCount = 32;
                 }
                 #endregion
 

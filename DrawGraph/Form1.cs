@@ -24,6 +24,9 @@ namespace DrawGraph
             InitializeComponent();
 
             GraphPane pane = zedGraph.GraphPane; /// Получим панель для рисования.
+            pane.Title.Text = "График эволюции";
+            pane.XAxis.Title.Text = "Итерации";
+            pane.YAxis.Title.Text = "Фитнес функция";
             pane.CurveList.Clear(); /// Очистим список кривых на тот случай, если до этого сигналы уже были нарисованы.
             PointPairList listmax = new PointPairList(); /// Создадим список точек из максимально приспособленных особей поколений.
             PointPairList listmiddle = new PointPairList(); /// Создадим список точек из особей с средней преспособленностью поколений.
@@ -37,8 +40,9 @@ namespace DrawGraph
             /// которая будет рисоваться голубым цветом (Color.Blue),
             /// Опорные точки выделяться не будут (SymbolType.None)
             LineItem myCurveMax = pane.AddCurve("Функция лидера", listmax, Color.Red, SymbolType.None);
-            LineItem myCurveMin = pane.AddCurve("Средняя фукнция", listmax, Color.Blue, SymbolType.Plus);
+            //LineItem myCurveMin = pane.AddCurve("Средняя фукнция", listmax, Color.Blue, SymbolType.Plus);
 
+            
             /// Вызываем метод AxisChange (), чтобы обновить данные об осях. 
             /// В противном случае на рисунке будет показана только часть графика, 
             /// которая умещается в интервалы по осям, установленные по умолчанию.
