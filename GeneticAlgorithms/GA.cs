@@ -90,11 +90,11 @@ namespace GeneticAlgorithms
         {
             int k = 0;
             List<iVector> TemporaryPopulation = new List<iVector>(); /// Временная популяция.
-            Population testPopulation = population;
+            //Population testPopulation = population;
             while (k < MaximumIterations)
             {
-                //population = population.GetParentPool(TournamentSize);
-                testPopulation = population.GetParentPool(TournamentSize);
+                population = population.GetParentPool(TournamentSize);
+                //testPopulation = population.GetParentPool(TournamentSize);
                 if (population.Max.FitnessFunction - population.Min.FitnessFunction < 0.01) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 while (TemporaryPopulation.Count != population.Count)
                 {
@@ -105,13 +105,13 @@ namespace GeneticAlgorithms
                 }
 
                 population = new Population(TemporaryPopulation);
-                if (k == 99) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                //if (k == 99) MessageBox.Show("Популяция выродилась!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 TemporaryPopulation.Clear();
                 k++;
             }
-            iVector min = population.Min;
-            population = null;
-            return min;
+            //iVector min = population.Max;
+            //population = null;
+            return population.Min;
         }
     }
 }

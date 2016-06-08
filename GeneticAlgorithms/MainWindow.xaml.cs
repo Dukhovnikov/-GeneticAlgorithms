@@ -27,6 +27,8 @@ namespace GeneticAlgorithms
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            int i = 0; // Количество переменных в уравнении
+            while (textBox2.Text.Contains("x" + (i + 1))) i++; // Подсчет количества переменных
             Func<double[], double> function = x => 4 * Math.Pow(x[0] - 5, 2) + Math.Pow(x[1] - 6, 2);
             Func<double[],double> function1 = x => 100 * Math.Pow(x[1] - x[0], 2) + Math.Pow(1 - x[0], 2);
             iVector.Function = function1;
