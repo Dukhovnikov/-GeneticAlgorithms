@@ -50,10 +50,13 @@
             <MenuItem Header="Файл" Height="20">
                 <MenuItem Header="Стандартные функции" HorizontalAlignment="Center" Height="20">
                     <MenuItem Header="8x1^2 + 4x1x2 + 5x2^2" HorizontalAlignment="Left" Height="20" Click="MenuItem_Click"/>
+                    <MenuItem Header="MenuItem" HorizontalAlignment="Left" Width="211.333333333333" Click="MenuItem_Click_1"/>
                 </MenuItem>
             </MenuItem>
         </Menu>
         <Button x:Name="buttonGraphicData" Content="Вывести график" HorizontalAlignment="Left" Margin="231,395,0,0" VerticalAlignment="Top" Width="103" Click="button2_Click" Height="23" Background="{x:Null}" BorderBrush="#FFB6B6B6"/>
+        <TextBox x:Name="textBoxBreakGeneration" HorizontalAlignment="Left" Height="23" Margin="495,359,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center"/>
+        <CheckBox x:Name="checkBoxBreakGeneration" Content="Разрыв поколений" HorizontalAlignment="Left" Margin="363,359,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center" Checked="checkBoxBreakGeneration_Checked" Unchecked="checkBoxBreakGeneration_Unchecked"/>
 
     </Grid>
 </Window>

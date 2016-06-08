@@ -52,6 +52,11 @@ namespace GeneticAlgorithms
         public static double InversionProbability { get; set; } = -1;
 
         /// <summary>
+        /// Разрыв поколений.
+        /// </summary>
+        public static double BreakGeneration { get; set; }
+
+        /// <summary>
         /// Коэффициент скрещивания, при BLXa - скрещивании.
         /// </summary>
         public static double BLXaRate { get; set; }
@@ -332,6 +337,16 @@ namespace GeneticAlgorithms
 
                 if (ControlPopulation.Max.FitnessFunction - ControlPopulation.Min.FitnessFunction < 0.01) { DegenerationTrack = true; }
 
+                if (isBreakGeneration)
+                {
+                    int size = Convert.ToInt32(BreakGeneration * ControlPopulation.Count) % 2 == 0 ? Convert.ToInt32(BreakGeneration * ControlPopulation.Count) : Convert.ToInt32(BreakGeneration * ControlPopulation.Count) + 1;
+                    ControlPopulation.Sort();
+                    for (int i = 0; i < size; i++)
+                    {
+                        TemporaryPopulation.Add(ControlPopulation[i]);
+                    }
+                }
+
                 while (TemporaryPopulation.Count != ControlPopulation.Count)
                 {
                     foreach (Vectors item in Crossing(population.RandomSelection, population.RandomSelection))
@@ -377,14 +392,25 @@ namespace GeneticAlgorithms
                 #region Если уплотнение сетки включено
                 if (PopulationMeshSeal)
                 {
-                    if (k > MaximumIterations * 0.6) Vectors.BitsCount = Convert.ToByte(Vectors.BitsCount * 2);
+                    if (k > MaximumIterations * 0.6) Vectors.BitsCount = 32;
                 }
                 #endregion
 
                 if (ControlPopulation.Max.FitnessFunction - ControlPopulation.Min.FitnessFunction < 0.01) { DegenerationTrack = true; }
 
+                if (isBreakGeneration)
+                {
+                    int size = Convert.ToInt32(BreakGeneration * ControlPopulation.Count) % 2 == 0 ? Convert.ToInt32(BreakGeneration * ControlPopulation.Count) : Convert.ToInt32(BreakGeneration * ControlPopulation.Count) + 1;
+                    ControlPopulation.Sort();
+                    for (int i = 0; i < size; i++)
+                    {
+                        TemporaryPopulation.Add(ControlPopulation[i]);
+                    }
+                }
+
                 while (TemporaryPopulation.Count != ControlPopulation.Count)
                 {
+
                     foreach (var item in Crossing(ControlPopulation.RandomSelection, ControlPopulation.RandomSelection))
                     {
                         TemporaryPopulation.Add(item);
@@ -472,6 +498,11 @@ namespace GeneticAlgorithms
         /// Свойство, которое возвращает true если инверсия включена.
         /// </summary>
         public static bool onInversion => (InversionProbability > 0) ? true : false;
+
+        /// <summary>
+        /// Свойство, которое возвращает true если разрыв поколений включен.
+        /// </summary>
+        public static bool isBreakGeneration => (BreakGeneration > 0) ? true : false;
 
         /// <summary>
         /// Переменная-счетчик, для подсчета количества выродлений.

@@ -53,7 +53,6 @@ namespace GeneticAlgorithms
 
 
         }
-
         private void listBoxCoding_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             listBoxCrossing.ItemsSource = VisualizationGA.GetViews().Where(item => (listBoxCoding.SelectedItem.ToString() == item.ViewsCoding)).Select(item => item.ViewsСrossing).ToList();
@@ -110,6 +109,7 @@ namespace GeneticAlgorithms
         private void Run()
         {
             GA.ClearData();
+            GA.DegenerationTrack = false;
             if (textBoxFunction.Text == "") { MessageBox.Show("Функция не задана", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning); return; } /// Проверка введена ли функция.
             int i = 0; /// Количество переменных в уравнении.
             while (textBoxFunction.Text.Contains("x" + (i + 1))) i++; /// Подсчет количества переменных.
@@ -126,8 +126,11 @@ namespace GeneticAlgorithms
             GA.SizePopulation = int.Parse(textBoxSizePopulation.Text);
             GA.MaximumIterations = int.Parse(textBoxMaximumIteration.Text);
             GA.TournamentSize = int.Parse(textBoxTournamentSize.Text);
+            GA.BreakGeneration = textBoxBreakGeneration.Text == "" ? -1 : Convert.ToDouble(textBoxBreakGeneration.Text);
+
             Vectors.BitsCount = byte.Parse(textBoxBitsCount.Text);
             Vectors minimum = GA.mainGeneticAlgoritm();
+
 
             textBoxRezultGA.Text = "Найденный минимум: [ " + minimum.ToString() + " ]" + Environment.NewLine;
             if (GA.DegenerationTrack && checkBoxIsPopulationConfluent.IsChecked == true) { textBoxRezultGA.Text += "У текущего решения была вырожденная популяция"; }
@@ -175,6 +178,31 @@ namespace GeneticAlgorithms
         private void checkBoxMeshSeal_Unchecked(object sender, RoutedEventArgs e)
         {
             GA.PopulationMeshSeal = false;
+        }
+
+        private void checkBoxBreakGeneration_Checked(object sender, RoutedEventArgs e)
+        {
+            textBoxBreakGeneration.IsEnabled = true;
+        }
+
+        private void checkBoxBreakGeneration_Unchecked(object sender, RoutedEventArgs e)
+        {
+            GA.BreakGeneration = -1;
+            textBoxBreakGeneration.IsEnabled = false;
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            textBoxFunction.Text = "100*(x2 - x1^3)^2 + (1 - x1)^2";
+            textBoxStartPoint.Text = "0 0";
+            textBoxEndPoint.Text = "5,12 5,12";
+            textBoxSizePopulation.Text = "100";
+            textBoxCrossingRate.Text = "0,75";
+            textBoxMutationRate.Text = "0,1";
+            textBoxInversionRate.Text = "0,07";
+            textBoxBitsCount.Text = "12";
+            textBoxMaximumIteration.Text = "50";
+            textBoxTournamentSize.Text = "5";
         }
     }
 }

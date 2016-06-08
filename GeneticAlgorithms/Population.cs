@@ -36,6 +36,11 @@ namespace GeneticAlgorithms
         public Vectors Max { get { return population.Max(); } }
 
         /// <summary>
+        /// Сортирует заданную популяцию в порядке ворастания.
+        /// </summary>
+        public void Sort() => population.Sort();
+
+        /// <summary>
         /// Возвращает случайную особь из популяции.
         /// </summary>
         public Vectors RandomSelection { get { return this[RandomNumber.Next(Count)]; } }
@@ -59,7 +64,7 @@ namespace GeneticAlgorithms
         /// </summary>
         public Population()
         {
-
+            
         }
 
         /// <summary>
