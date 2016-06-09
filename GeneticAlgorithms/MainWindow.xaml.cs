@@ -28,31 +28,11 @@ namespace GeneticAlgorithms
             listBoxCoding.ItemsSource = VisualizationGA.GetViews().Select(item => item.ViewsCoding).Distinct().ToList();
             listBoxCoding.SelectedIndex = 0;
             listBoxCrossing.SelectedIndex = 1;
-            textBoxMutationRate.IsEnabled = false;
-            textBoxInversionRate.IsEnabled = false;
-            textBoxTournamentSize.IsEnabled = false;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            //if (textBoxFunction.Text == "") { MessageBox.Show("Функция не задана", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning); return; } /// Проверка введена ли функция.
-            //int i = 0; /// Количество переменных в уравнении.
-            //while (textBoxFunction.Text.Contains("x" + (i + 1))) i++; /// Подсчет количества переменных.
-
-            //Parser parser = new Parser(); /// Инициализация парсера.
-            //parser.createDelegat(textBoxFunction.Text); /// Передача парсеру текста целевой функции.
-            //Vectors.Function = Parser.variable; /// Создание делегата исходной функции на С#.
-
-            ////Func<double[], double> function = x => 4 * Math.Pow(x[0] - 5, 2) + Math.Pow(x[1] - 6, 2);
-            ////Func<double[],double> function1 = x => 100 * Math.Pow(x[1] - x[0], 2) + Math.Pow(1 - x[0], 2);
-            ////Func<double[], double> function2 = x => Math.Pow(x[0], 3) + Math.Pow(x[1], 2) - 3 * x[0] - 2 * x[1] + 2;
-
-            //if (textBoxStartPoint.Text != "") { Vectors.StartPoint = new Vectors(textBoxStartPoint.Text); } /// Инициализация стартового интервала.
-            //if (textBoxEndPoint.Text != "") { Vectors.EndPoint = new Vectors(textBoxEndPoint.Text); } /// Инициализация конечного интервала.
-
             Run();
-
-
         }
         private void listBoxCoding_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -107,40 +87,6 @@ namespace GeneticAlgorithms
             listBoxCrossing.SelectedIndex = 0;
         }
 
-        private void Run()
-        {
-            GA.ClearData();
-            GA.DegenerationTrack = false;
-            if (textBoxFunction.Text == "") { MessageBox.Show("Функция не задана", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning); return; } /// Проверка введена ли функция.
-            int i = 0; /// Количество переменных в уравнении.
-            while (textBoxFunction.Text.Contains("x" + (i + 1))) i++; /// Подсчет количества переменных.
-
-            Parser parser = new Parser(); /// Инициализация парсера.
-            parser.createDelegat(textBoxFunction.Text); /// Передача парсеру текста целевой функции.
-            Vectors.Function = Parser.variable; /// Создание делегата исходной функции на С#.
-
-            if (textBoxStartPoint.Text != "") { Vectors.StartPoint = new Vectors(textBoxStartPoint.Text); } /// Инициализация стартового интервала.
-            if (textBoxEndPoint.Text != "") { Vectors.EndPoint = new Vectors(textBoxEndPoint.Text); } /// Инициализация конечного интервала.
-
-            GA.CrossingProbability = Convert.ToDouble(textBoxCrossingRate.Text);
-            GA.MutationProbability = Convert.ToDouble(textBoxMutationRate.Text);
-            GA.SizePopulation = int.Parse(textBoxSizePopulation.Text);
-            GA.MaximumIterations = int.Parse(textBoxMaximumIteration.Text);
-            GA.TournamentSize = int.Parse(textBoxTournamentSize.Text);
-
-            GA.BreakGeneration = textBoxBreakGeneration.Text == "" ? -1 : Convert.ToDouble(textBoxBreakGeneration.Text);
-
-            //listBoxCoding.SelectedIndex == 1? Vectors.BitsCount = byte.Parse(textBoxBitsCount.Text)
-
-
-
-            Vectors minimum = GA.mainGeneticAlgoritm();
-
-
-            textBoxRezultGA.Text = "Найденный минимум: [ " + minimum.ToString() + " ]" + Environment.NewLine;
-            if (GA.DegenerationTrack && checkBoxIsPopulationConfluent.IsChecked == true) { textBoxRezultGA.Text += "У текущего решения была вырожденная популяция"; }
-        }
-
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             defaultSetting();
@@ -162,7 +108,7 @@ namespace GeneticAlgorithms
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            Form1 form = new Form1(GA.Data.MinValues, GA.Data.MinValues);
+            Form1 form = new Form1(GA.Data.MinValues, GA.Data.MiddleValues);
         }
 
         private void checkBoxPopulationSpike_Checked(object sender, RoutedEventArgs e)
@@ -210,6 +156,16 @@ namespace GeneticAlgorithms
             textBoxTournamentSize.Text = "5";
         }
 
-        
+        private void checkBoxClassicMO_Checked(object sender, RoutedEventArgs e)
+        {
+            isUseClassicMO = true;
+            groupBoxClassicMO.IsEnabled = true;
+        }
+
+        private void checkBoxClassicMO_Unchecked(object sender, RoutedEventArgs e)
+        {
+            isUseClassicMO = false;
+            groupBoxClassicMO.IsEnabled = false;
+        }
     }
 }

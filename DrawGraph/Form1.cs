@@ -29,18 +29,18 @@ namespace DrawGraph
             pane.YAxis.Title.Text = "Фитнес функция";
             pane.CurveList.Clear(); /// Очистим список кривых на тот случай, если до этого сигналы уже были нарисованы.
             PointPairList listmax = new PointPairList(); /// Создадим список точек из максимально приспособленных особей поколений.
-            PointPairList listmiddle = new PointPairList(); /// Создадим список точек из особей с средней преспособленностью поколений.
+            //PointPairList listmiddle = new PointPairList(); /// Создадим список точек из особей с средней преспособленностью поколений.
             for (int i = 0; i < IndividMax.Count; i++)
             {
                 listmax.Add(i, IndividMax[i]);
-                listmiddle.Add(i, IndividMiddle[i]);
+                //listmiddle.Add(i, IndividMiddle[i]);
             }
 
             /// Создадим кривую с названием "Sinc", 
             /// которая будет рисоваться голубым цветом (Color.Blue),
             /// Опорные точки выделяться не будут (SymbolType.None)
             LineItem myCurveMax = pane.AddCurve("Функция лидера", listmax, Color.Red, SymbolType.None);
-            LineItem myCurveMin = pane.AddCurve("Средняя фукнция", listmiddle, Color.Blue, SymbolType.None);
+            //LineItem myCurveMin = pane.AddCurve("Средняя фукнция", listmiddle, Color.Blue, SymbolType.None);
 
             /// Вызываем метод AxisChange (), чтобы обновить данные об осях. 
             /// В противном случае на рисунке будет показана только часть графика, 

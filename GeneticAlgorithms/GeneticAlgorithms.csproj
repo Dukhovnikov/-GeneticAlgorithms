@@ -70,8 +70,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ClassicOptimizationMethod.cs" />
     <Compile Include="GA.cs" />
     <Compile Include="LaboratoryWork.cs" />
+    <Compile Include="MainWindow.cs" />
     <Compile Include="Matrix.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="PopulationData.cs" />

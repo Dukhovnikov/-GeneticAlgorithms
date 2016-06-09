@@ -5,27 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GeneticAlgorithms"
         mc:Ignorable="d"
-        Title="Генетические Алгоритмы" Height="750.976" Width="591.352">
+        Title="Генетические Алгоритмы" Height="785.642" Width="530.352">
     <Grid ForceCursor="True" Background="{DynamicResource {x:Static SystemColors.InactiveCaptionBrushKey}}">
-        <GroupBox x:Name="groupBox" Header="Поисковой интервал" HorizontalAlignment="Left" Margin="364,97,0,0" VerticalAlignment="Top" Height="88" Width="139">
+        <GroupBox x:Name="groupBox" Header="Поисковой интервал" HorizontalAlignment="Left" Margin="240,77,0,0" VerticalAlignment="Top" Height="88" Width="139">
             <Grid>
                 <TextBox x:Name="textBoxStartPoint" HorizontalAlignment="Left" Height="23" Margin="10,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="102" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
                 <TextBox x:Name="textBoxEndPoint" HorizontalAlignment="Left" Height="23" Margin="10,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="102" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
             </Grid>
         </GroupBox>
         <TextBox x:Name="textBoxFunction" HorizontalAlignment="Left" Height="23" Margin="153,35,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="262" VerticalContentAlignment="Center"/>
-        <Button x:Name="button" Content="Запустить" HorizontalAlignment="Left" Margin="8,443,0,0" VerticalAlignment="Top" Width="103" Click="button_Click" RenderTransformOrigin="-2.83,-2.254" Height="23" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Background="{x:Null}" BorderBrush="#FFB6B6B6"/>
-        <ListBox x:Name="listBoxCoding" HorizontalAlignment="Left" Height="48" Margin="301,0,0,342" VerticalAlignment="Bottom" Width="259" SelectionChanged="listBoxCoding_SelectionChanged"/>
-        <ListBox x:Name="listBoxCrossing" HorizontalAlignment="Left" Height="72" Margin="301,210,0,0" VerticalAlignment="Top" Width="259" SelectionChanged="listBoxCrossing_SelectionChanged"/>
+        <Button x:Name="button" Content="Запустить" HorizontalAlignment="Left" Margin="10,409,0,0" VerticalAlignment="Top" Width="103" Click="button_Click" RenderTransformOrigin="-2.83,-2.254" Height="23" VerticalContentAlignment="Top" HorizontalContentAlignment="Center" Background="{x:Null}" BorderBrush="#FFB6B6B6"/>
+        <ListBox x:Name="listBoxCoding" HorizontalAlignment="Left" Height="48" Margin="240,170,0,0" VerticalAlignment="Top" Width="259" SelectionChanged="listBoxCoding_SelectionChanged"/>
+        <ListBox x:Name="listBoxCrossing" HorizontalAlignment="Left" Height="72" Margin="240,223,0,0" VerticalAlignment="Top" Width="259" SelectionChanged="listBoxCrossing_SelectionChanged"/>
         <GroupBox x:Name="groupBox1" Header="Основные настройки ГА" HorizontalAlignment="Left" Margin="17,77,0,0" VerticalAlignment="Top" Height="318" Width="218" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
             <Grid>
-                <CheckBox x:Name="checkBoxMutation" Content="Мутация" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center" Checked="checkBoxMutation_Checked" Unchecked="checkBoxMutation_Unchecked" Width="128"/>
-                <CheckBox x:Name="checkBoxInversion" Content="Инверсия" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center" Checked="checkBoxInversion_Checked" Unchecked="checkBoxInversion_Unchecked" Width="128"/>
+                <CheckBox x:Name="checkBoxMutation" Content="Мутация" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center" Checked="checkBoxMutation_Checked" Unchecked="checkBoxMutation_Unchecked" Width="128"/>
+                <CheckBox x:Name="checkBoxInversion" Content="Инверсия" HorizontalAlignment="Left" Margin="10,176,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center" Checked="checkBoxInversion_Checked" Unchecked="checkBoxInversion_Unchecked" Width="128"/>
                 <CheckBox x:Name="checkBoxMeshSeal" Content="Уплотнение сетки" HorizontalAlignment="Left" Margin="10,238,0,0" VerticalContentAlignment="Center" Height="23" VerticalAlignment="Top" Checked="checkBoxMeshSeal_Checked" Unchecked="checkBoxMeshSeal_Unchecked"/>
                 <CheckBox x:Name="checkBoxPopulationSpike" Content="Популяционный всплеск" HorizontalAlignment="Left" Margin="10,266,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center" Checked="checkBoxPopulationSpike_Checked" Unchecked="checkBoxPopulationSpike_Unchecked"/>
                 <TextBox x:Name="textBoxCrossingRate" HorizontalAlignment="Left" Height="21" Margin="143,66,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-                <TextBox x:Name="textBoxInversionRate" HorizontalAlignment="Left" Height="23" Margin="143,148,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-                <TextBox x:Name="textBoxMutationRate" HorizontalAlignment="Left" Height="23" Margin="143,120,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                <TextBox x:Name="textBoxInversionRate" HorizontalAlignment="Left" Height="23" Margin="143,176,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False"/>
+                <TextBox x:Name="textBoxMutationRate" HorizontalAlignment="Left" Height="23" Margin="143,148,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="False"/>
                 <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,66,0,0" TextWrapping="Wrap" Text="Скрещивение" VerticalAlignment="Top" Width="128" Height="21"/>
                 <TextBlock x:Name="textBlock1" HorizontalAlignment="Left" Margin="10,92,0,0" TextWrapping="Wrap" Text="Размер турнира" VerticalAlignment="Top" Height="23" Width="128"/>
                 <TextBox x:Name="textBoxTournamentSize" HorizontalAlignment="Left" Height="23" Margin="143,92,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
@@ -34,20 +34,22 @@
                 <TextBox x:Name="textBoxMaximumIteration" HorizontalAlignment="Left" Height="23" Margin="143,38,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
                 <TextBlock x:Name="textBlock2" HorizontalAlignment="Left" Margin="10,38,0,0" TextWrapping="Wrap" Text="Количество итераций" VerticalAlignment="Top" Height="23" Width="128"/>
                 <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" Height="1" Margin="0,232,0,0" VerticalAlignment="Top"/>
-                <CheckBox x:Name="checkBoxBreakGeneration" Content="Разрыв поколений" HorizontalAlignment="Left" Margin="10,176,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center" Checked="checkBoxBreakGeneration_Checked" Unchecked="checkBoxBreakGeneration_Unchecked"/>
-                <TextBox x:Name="textBoxBreakGeneration" HorizontalAlignment="Left" Height="23" Margin="143,176,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center"/>
+                <CheckBox x:Name="checkBoxBreakGeneration" Content="Разрыв поколений" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center" Checked="checkBoxBreakGeneration_Checked" Unchecked="checkBoxBreakGeneration_Unchecked"/>
+                <TextBox x:Name="textBoxBreakGeneration" HorizontalAlignment="Left" Height="23" Margin="143,120,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50" VerticalContentAlignment="Center"/>
                 <CheckBox x:Name="checkBoxIsPopulationConfluent" Content="Отслеживать вырождение" HorizontalAlignment="Left" Margin="10,204,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center"/>
             </Grid>
         </GroupBox>
-        <Button x:Name="button1" Content="По умолчанию" HorizontalAlignment="Left" Margin="122,443,0,0" VerticalAlignment="Top" Width="103" Height="23" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="#FFB6B6B6" Click="button1_Click"/>
-        <GroupBox x:Name="groupBox2" Header="Результат" HorizontalAlignment="Left" Margin="10,541,0,0" VerticalAlignment="Top" Height="145" Width="563">
+        <Button x:Name="button1" Content="По умолчанию" HorizontalAlignment="Left" Margin="124,409,0,0" VerticalAlignment="Top" Width="103" Height="23" VerticalContentAlignment="Center" Background="{x:Null}" BorderBrush="#FFB6B6B6" Click="button1_Click"/>
+        <GroupBox x:Name="groupBox2" Header="Результат" Margin="0,557,0,0" VerticalAlignment="Top" Height="189">
             <Grid>
-                <TextBox x:Name="textBoxRezultGA" HorizontalAlignment="Left" Height="48" Margin="11,10,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="530"/>
-                <TextBox x:Name="textBoxRezultEnd" HorizontalAlignment="Left" Height="48" Margin="10,65,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="530"/>
+                <TextBox x:Name="textBoxRezultGA" Height="48" Margin="0,31,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
+                <TextBox x:Name="textBoxRezultEnd" Height="48" Margin="0,106,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top"/>
+                <TextBlock x:Name="textBlock5" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Генетические алгоритмы" VerticalAlignment="Top"/>
+                <TextBlock x:Name="textBlock6" HorizontalAlignment="Left" Margin="10,85,0,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Классический метод оптимизации"/></TextBlock>
             </Grid>
         </GroupBox>
-        <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="293,302,0,0" TextWrapping="Wrap" Text="Количество разрядов кодирования" VerticalAlignment="Top" Height="23"/>
-        <TextBox x:Name="textBoxBitsCount" HorizontalAlignment="Left" Height="23" Margin="493,302,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50"/>
+        <TextBlock x:Name="textBlock4" HorizontalAlignment="Left" Margin="240,300,0,0" TextWrapping="Wrap" Text="Количество разрядов кодирования" VerticalAlignment="Top" Height="23"/>
+        <TextBox x:Name="textBoxBitsCount" HorizontalAlignment="Left" Height="23" Margin="449,300,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="50" IsEnabled="False"/>
         <Menu x:Name="menu" Height="20" VerticalAlignment="Top">
             <MenuItem Header="Файл" Height="20">
                 <MenuItem Header="Стандартные функции" HorizontalAlignment="Center" Height="20">
@@ -56,7 +58,14 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-        <Button x:Name="buttonGraphicData" Content="Вывести график" HorizontalAlignment="Left" Margin="230,443,0,0" VerticalAlignment="Top" Width="103" Click="button2_Click" Height="23" Background="{x:Null}" BorderBrush="#FFB6B6B6"/>
+        <Button x:Name="buttonGraphicData" Content="Вывести график" HorizontalAlignment="Left" Margin="232,409,0,0" VerticalAlignment="Top" Width="103" Click="button2_Click" Height="23" Background="{x:Null}" BorderBrush="#FFB6B6B6"/>
+        <CheckBox x:Name="checkBoxClassicMO" Content="Использовать классические МО" HorizontalAlignment="Left" Margin="10,444,0,0" VerticalAlignment="Top" Height="23" VerticalContentAlignment="Center" Checked="checkBoxClassicMO_Checked" Unchecked="checkBoxClassicMO_Unchecked"/>
+        <GroupBox x:Name="groupBoxClassicMO" Header="Выберите метод поиска" HorizontalAlignment="Left" Margin="10,472,0,0" VerticalAlignment="Top" Height="80" Width="216" IsEnabled="False">
+            <Grid>
+                <RadioButton x:Name="radioButtonPhletcherRivs" Content="Метод Флетчера-Ривса" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                <RadioButton x:Name="radioButtonBFGSH" Content="Метод БФГШ" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top"/>
+            </Grid>
+        </GroupBox>
 
     </Grid>
 </Window>

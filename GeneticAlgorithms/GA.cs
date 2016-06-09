@@ -339,7 +339,7 @@ namespace GeneticAlgorithms
 
                 if (isBreakGeneration)
                 {
-                    int size = Convert.ToInt32(BreakGeneration * ControlPopulation.Count) % 2 == 0 ? Convert.ToInt32(BreakGeneration * ControlPopulation.Count) : Convert.ToInt32(BreakGeneration * ControlPopulation.Count) + 1;
+                    int size = Convert.ToInt32((1 - BreakGeneration) * ControlPopulation.Count) % 2 == 0 ? Convert.ToInt32((1 - BreakGeneration) * ControlPopulation.Count) : Convert.ToInt32((1 - BreakGeneration) * ControlPopulation.Count) + 1;
                     ControlPopulation.Sort();
                     for (int i = 0; i < size; i++)
                     {
@@ -400,7 +400,7 @@ namespace GeneticAlgorithms
 
                 if (isBreakGeneration)
                 {
-                    int size = Convert.ToInt32(BreakGeneration * ControlPopulation.Count) % 2 == 0 ? Convert.ToInt32(BreakGeneration * ControlPopulation.Count) : Convert.ToInt32(BreakGeneration * ControlPopulation.Count) + 1;
+                    int size = Convert.ToInt32((1 - BreakGeneration) * ControlPopulation.Count) % 2 == 0 ? Convert.ToInt32((1 - BreakGeneration) * ControlPopulation.Count) : Convert.ToInt32((1 - BreakGeneration) * ControlPopulation.Count) + 1;
                     ControlPopulation.Sort();
                     for (int i = 0; i < size; i++)
                     {
